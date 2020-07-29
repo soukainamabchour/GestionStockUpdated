@@ -127,11 +127,15 @@ public class StockController {
     @RequestMapping(value = "/addMelange", method = RequestMethod.POST)
     public String addMelange(@ModelAttribute("selected_emp")MelangeEmplacement emp,
                              @Valid Melange melange, BindingResult br, Model model,
+                             @RequestParam(name = "page", defaultValue = "0") int p,
+                             @RequestParam(name = "size", defaultValue = "5") int s,
                              @RequestParam(name="ref_id")Long id,
                              @RequestParam(name = "ref")String ref) {
+        MelangeReference reference = melangeReferenceRepository.findById(id).get();
         model.addAttribute("melange", melange);
         model.addAttribute("ref_id", id);
         model.addAttribute("ref", ref);
+        melange.setReference(reference);
         melangeRepository.save(melange);
         return "saveMelange";
     }
