@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="theme">
+<head>
+    <title>Ajouter un mélanges</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container justify-content-center mt-3 container-fluid">
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="card">
+                    <h5 class="card-header">Ajouter un mélange</h5>
+                    <div class="card-body">
+                        <form method="post" th:action="@{addMelange(ref_id=${ref_id}, ref=${ref})}">
+                            <div>
+                                <label class="control-label">ID : </label>
+                                <label class="control-label" th:if="${melange.id!=null}"
+                                       th:text="${melange.id}"></label>
+                                <label class="control-label" th:if="${melange.id==null}">Généré
+                                    automatiquement</label>
+                                <input type="hidden" name="id" class="form-control" th:value="${melange.id}">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Référence : </label>
+                                <label class="control-label" th:text="${ref}" th:value="${ref}" th:name="reference"></label>
+                                <a th:href="@{formMelangeRef}"
+                                   class="btn btn-outline-primary btn-sm">Ajouter une nouvelle référence</a>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="lot" placeholder="N°Lot" th:value="${melange.lot}">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Emplacement: </label>
+                                <select name="melangeRef" style="border-radius: 50px">
+                                    <option th:each="emp:${emplacement}" th:value="${emp.id}"
+                                            th:text="${emp.emplacement}"></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label >Date de reception</label>
+                                <input type="date" name="dateReception" class="form-control" th:value="${melange.dateReception}">
+                            </div>
+                            <div class="form-group">
+                                <label >Date de fabrication</label>
+                                <input type="date" name="dateFabrication" class="form-control" th:value="${melange.dateFabrication}">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="dimension" placeholder="Dimension" th:value="${melange.dimension}">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="poids" placeholder="Poids" th:value="${melange.poids}">
+                            </div>
+                            <button class=" btn btn-outline-success" type="submit">Enregistrer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

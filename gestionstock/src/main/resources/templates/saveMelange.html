@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="theme">
+<head>
+    <title>Confirmation</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center container-fluid">
+            <div class="col-md-6">
+                <div class="card mt-4">
+
+                    <div class="card-body">
+                        <h3 class="card-title text-muted">Enregistré!</h3>
+                        <hr>
+                        <div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">ID : </label>
+                            <label class="col-form-label" th:text="${melange.id}"></label>
+                        </div>
+                        <div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">Référence : </label>
+                            <label class="col-form-label" th:text="${ref}"></label>
+                        </div>
+                        <div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">N°Lot : </label>
+                            <label class="col-form-label" th:text="${melange.getLot()}"></label>
+                        </div>
+                        <!--<div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">Emplacement : </label>
+                            <label class="col-form-label" th:text="${melange.emplacement.getEmplacement()}"></label>
+                        </div>-->
+                        <div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">Date de récéption : </label>
+                            <label class="col-form-label" th:text="${melange.getDateReception()}"></label>
+                        </div>
+                        <div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">Date de fabrication : </label>
+                            <label class="col-form-label" th:text="${melange.getDateFabrication()}"></label>
+                        </div>
+                        <div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">Dimension : </label>
+                            <label class="col-form-label" th:text="${melange.dimension}"></label>
+                        </div>
+                        <div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">Poids : </label>
+                            <label class="col-form-label" th:text="${melange.poids}"></label>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" th:value="${ref_id}" name="ref_id">
+                <a th:href="@{melange(ref_id=${ref_id}, ref=${ref})}"
+                   class="btn btn-block btn-outline-primary mb-3">Liste des mélange</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
