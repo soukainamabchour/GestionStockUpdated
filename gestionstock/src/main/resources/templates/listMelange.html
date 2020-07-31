@@ -46,7 +46,7 @@
                                     <td th:text="${m.poids}"></td>
                                     <td th:text="${m.getEmplacement().getEmplacement()}"></td>
                                     <td>
-                                        <a th:href="@{editMelange(id=${m.getId()}, ref_id=${ref_id}, ref=${ref})}"
+                                        <a th:href="@{editMelange(id=${m.getId()}, ref_id=${ref_id}, ref=${ref}, emp=${m.getEmplacement().getId()})}"
                                            class="btn btn-outline-warning">Modifier</a>
                                     </td>
                                     <td>

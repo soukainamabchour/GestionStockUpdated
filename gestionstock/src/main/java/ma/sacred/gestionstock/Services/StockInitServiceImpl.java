@@ -54,6 +54,7 @@ public class StockInitServiceImpl implements IStockInitService {
         MelangeReference reference = melangeRefRepository.findById((long) 1).get();
         melange1.setReference(reference);
         MelangeEmplacement emplacement = melangeEmplacementRepository.findById((long) 1).get();
+        emplacement.setEtat(true);
         melange1.setEmplacement(emplacement);
         melange1.setLot("LOT 1");
         melange1.setDateReception(LocalDate.now());

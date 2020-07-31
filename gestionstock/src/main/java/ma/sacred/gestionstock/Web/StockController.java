@@ -115,7 +115,7 @@ public class StockController {
                               @RequestParam(name = "size", defaultValue = "5") int s,
                               @RequestParam(name = "ref_id")Long id,
                               @RequestParam(name = "ref")String ref){
-        Page<MelangeEmplacement> emplacements=melangeEmplacementRepository.findAll(PageRequest.of(p, s));
+        Page<MelangeEmplacement> emplacements=melangeEmplacementRepository.findByEtatIsFalse(PageRequest.of(p, s));
         Melange melange=new Melange();
         model.addAttribute("melange", melange);
         model.addAttribute("ref_id", id);
@@ -132,6 +132,7 @@ public class StockController {
                              @RequestParam(name="ref_id")Long id,
                              @RequestParam(name = "ref")String ref) {
         MelangeReference reference = melangeReferenceRepository.findById(id).get();
+        melange.getEmplacement().setEtat(true);
         model.addAttribute("melange", melange);
         model.addAttribute("ref_id", id);
         model.addAttribute("ref", ref);
@@ -146,8 +147,12 @@ public class StockController {
                               @RequestParam(name = "page", defaultValue = "0") int p,
                               @RequestParam(name = "size", defaultValue = "5") int s,
                               @RequestParam(name = "ref_id")Long ref_id,
-                              @RequestParam(name = "ref")String ref) {
-        Page<MelangeEmplacement> emplacements=melangeEmplacementRepository.findAll(PageRequest.of(p, s));
+                              @RequestParam(name = "ref")String ref,
+                              @RequestParam(name = "emp")Long emp){
+        MelangeEmplacement old_emp=melangeEmplacementRepository.findById(emp).get();
+        old_emp.setEtat(false);
+        melangeEmplacementRepository.save(old_emp);
+        Page<MelangeEmplacement> emplacements=melangeEmplacementRepository.findByEtatIsFalse(PageRequest.of(p, s));
         Melange melange= melangeRepository.findByIdAndReference_Id(id, ref_id);
         model.addAttribute("melange", melange);
         model.addAttribute("ref", ref);
