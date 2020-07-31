@@ -74,6 +74,7 @@ public class StockController {
     @RequestMapping(value = "/editMelangeRef", method = RequestMethod.GET)
     public String editMelangeRef(Model model, Long id) {
         MelangeReference melangeRef = melangeReferenceRepository.findById(id).get();
+        model.addAttribute("id", id);
         model.addAttribute("melangeRef", melangeRef);
         return "formMelangeRef";
     }
@@ -125,8 +126,7 @@ public class StockController {
 
     ////////------------------Enregistrer mélange------------////////////
     @RequestMapping(value = "/addMelange", method = RequestMethod.POST)
-    public String addMelange(@ModelAttribute("selected_emp")MelangeEmplacement emp,
-                             @Valid Melange melange, BindingResult br, Model model,
+    public String addMelange(@Valid Melange melange, BindingResult br, Model model,
                              @RequestParam(name = "page", defaultValue = "0") int p,
                              @RequestParam(name = "size", defaultValue = "5") int s,
                              @RequestParam(name="ref_id")Long id,
@@ -140,20 +140,33 @@ public class StockController {
         return "saveMelange";
     }
 
-    /*////////------------------Modifier mélange------------////////////
+    ////////------------------Modifier mélange------------////////////
     @RequestMapping(value = "/editMelange", method = RequestMethod.GET)
     public String editMelange(Model model, Long id,
-                              @RequestParam(name = "ref_id")Long ref_id) {
+                              @RequestParam(name = "page", defaultValue = "0") int p,
+                              @RequestParam(name = "size", defaultValue = "5") int s,
+                              @RequestParam(name = "ref_id")Long ref_id,
+                              @RequestParam(name = "ref")String ref) {
+        Page<MelangeEmplacement> emplacements=melangeEmplacementRepository.findAll(PageRequest.of(p, s));
         Melange melange= melangeRepository.findByIdAndReference_Id(id, ref_id);
         model.addAttribute("melange", melange);
+        model.addAttribute("ref", ref);
+        model.addAttribute("ref_id", ref_id);
+        model.addAttribute("emplacement",emplacements);
         return "formMelange";
     }
 
     ////////------------------Supprimer mélange------------////////////
     @RequestMapping(value = "/deleteMelange", method = RequestMethod.POST)
-    public String deleteMelange(Long id, int page, int size) {
+    public String deleteMelange(Model model, Long id,
+                                @RequestParam(name = "ref_id")Long ref_id,
+                                @RequestParam(name = "ref")String ref,
+                                @RequestParam(name = "keyword", defaultValue = "")String keyword,
+                                int page, int size) {
+        model.addAttribute("ref", ref);
+        model.addAttribute("ref_id", ref_id);
         melangeRepository.deleteById(id);
-        return "redirect:/melange?page=" + page + "&size=" + size + "";
-    }*/
+        return "redirect:/melange?ref_id="+ref_id+"&ref="+ref+"&page=" + page + "&size=" + size + "&keyword="+keyword+"";
+    }
 
 }

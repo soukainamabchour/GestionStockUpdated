@@ -17,7 +17,7 @@
                             <div>
                                 <label class="control-label">ID : </label>
                                 <label class="control-label" th:if="${melange.id!=null}"
-                                       th:text="${melange.id}"></label>
+                                       th:text="${melange.id}" name="id"></label>
                                 <label class="control-label" th:if="${melange.id==null}">Généré
                                     automatiquement</label>
                                 <input type="hidden" name="id" class="form-control" th:value="${melange.id}">
