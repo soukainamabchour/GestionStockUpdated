@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface MelangeRepository extends JpaRepository<Melange, Long> {
-    public Page<Melange> findByReference_IdAndLotContains(Long id, String keyword, Pageable page);
+   // public Page<Melange> findByReference_IdAndLotContains();
     public Melange findByIdAndReference_Id(Long id, Long ref_id);
+    public Page<Melange> findByReference_IdAndLotContainsOrderByJoursAsc(Long id, String keyword, Pageable page);
 }

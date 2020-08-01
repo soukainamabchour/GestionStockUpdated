@@ -28,19 +28,19 @@
                                     <th>ID</th>
                                     <th>N° Lot</th>
                                     <th>Référence</th>
-                                    <th>Date de Récéption</th>
                                     <th>Date de fabrication</th>
+                                    <th>Date de Récéption</th>
                                     <th>Date d'utilisation</th>
                                     <th>Dimension</th>
                                     <th>Poids</th>
                                     <th>Emplacement</th>
                                 </tr>
                                 <tr th:each="m:${listMelange}">
-                                    <td th:text="${m.id}"></td>
+                                    <td class="btn btn-success" th:if="${m.getJours()==0 || m.getJours()<60}" th:text="${m.id}"></td>
                                     <td th:text="${ref}"></td>
                                     <td th:text="${m.getLot()}"></td>
-                                    <td th:text="${m.getDateReception()}"></td>
                                     <td th:text="${m.getDateFabrication()}"></td>
+                                    <td th:text="${m.getDateReception()}"></td>
                                     <td th:text="${m.getDateUtilisation()}"></td>
                                     <td th:text="${m.dimension}"></td>
                                     <td th:text="${m.poids}"></td>

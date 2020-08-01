@@ -27,6 +27,7 @@ public class Melange {
     private LocalDateTime dateUtilisation;
     private double dimension;
     private double poids;
+    private long jours;
     @ManyToOne
     private MelangeReference reference;
     @OneToOne(cascade = CascadeType.ALL)

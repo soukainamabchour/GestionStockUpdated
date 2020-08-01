@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -96,7 +97,10 @@ public class StockController {
                               @RequestParam(name = "ref")String ref,
                               @RequestParam(name = "keyword", defaultValue ="") String kw
     ) {
-        Page<Melange> melange = melangeRepository.findByReference_IdAndLotContains(ref_id,kw, PageRequest.of(p, s));
+        Page<Melange> melange = melangeRepository.findByReference_IdAndLotContainsOrderByJoursAsc(ref_id,kw, PageRequest.of(p, s));
+        melange.forEach(m->{
+            m.setJours(90- ChronoUnit.DAYS.between(m.getDateFabrication(), m.getDateReception()));
+        });
         model.addAttribute("result", melange.getTotalElements());
         model.addAttribute("listMelange", melange.getContent());
         model.addAttribute("pages", new int[melange.getTotalPages()]);
