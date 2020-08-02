@@ -48,10 +48,10 @@
                                     <td th:text="${m.getEmplacement().getEmplacement()}"></td>
 
                                     <td>
-                                        <form th:action="@{useMelange(id=${m.getId()},ref_id=${ref_id}, ref=${ref})}">
+                                        <form th:action="@{useMelange(id=${m.getId()},ref_id=${ref_id}, ref=${ref})}" method="post">
                                             <input type="hidden" name="id" th:value="${m.id}"/>
                                             <input type="hidden" name="page" th:value="${currentPage}"/>
-                                            <input type="hidden" name="size" th:value="${size}"/>
+                                            <input type="hidden" name="size" th:value="${5}"/>
                                             <input type="hidden" name="ref_id" th:value="${ref_id}">
                                             <input type="hidden" name="ref" th:value="${ref}">
                                             <button class="btn btn-outline-primary">Retirer</button>

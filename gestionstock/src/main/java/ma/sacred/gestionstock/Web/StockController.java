@@ -159,7 +159,7 @@ public class StockController {
         Melange melange=melangeRepository.findById(id).get();
         melange.setDateUtilisation(LocalDateTime.now());
         melangeRepository.save(melange);
-        return "listMelange";
+        return "redirect:/melange?ref_id="+ref_id+"&ref="+ref+"&page=" + p + "&size=" + s + "&keyword="+kw+"";
     }
 
     ////////------------------Modifier mélange------------////////////
