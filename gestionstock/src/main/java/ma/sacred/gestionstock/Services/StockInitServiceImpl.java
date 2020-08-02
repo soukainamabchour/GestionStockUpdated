@@ -50,7 +50,7 @@ public class StockInitServiceImpl implements IStockInitService {
 
     @Override
     public void initMelange() {
-       /* Melange melange1 = new Melange();
+        Melange melange1 = new Melange();
         MelangeReference reference = melangeRefRepository.findById((long) 1).get();
         melange1.setReference(reference);
         MelangeEmplacement emplacement = melangeEmplacementRepository.findById((long) 1).get();
@@ -64,7 +64,7 @@ public class StockInitServiceImpl implements IStockInitService {
         melange1.setPoids(10);
         melangeRepository.save(melange1);
 
-        Melange melange2 = new Melange();
+        /*Melange melange2 = new Melange();
         MelangeReference reference2 = melangeRefRepository.findById((long) 2).get();
         melange1.setReference(reference2);
         MelangeEmplacement emplacement2 = melangeEmplacementRepository.findById((long) 2).get();

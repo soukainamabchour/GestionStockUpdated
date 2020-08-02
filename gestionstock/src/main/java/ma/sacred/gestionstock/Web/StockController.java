@@ -15,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -99,7 +101,7 @@ public class StockController {
     ) {
         Page<Melange> melange = melangeRepository.findByReference_IdAndLotContainsOrderByJoursAsc(ref_id,kw, PageRequest.of(p, s));
         melange.forEach(m->{
-            m.setJours(90- ChronoUnit.DAYS.between(m.getDateFabrication(), m.getDateReception()));
+            m.setJours(90- ChronoUnit.DAYS.between(m.getDateFabrication(), LocalDate.now()));
         });
         model.addAttribute("result", melange.getTotalElements());
         model.addAttribute("listMelange", melange.getContent());
@@ -143,6 +145,21 @@ public class StockController {
         melange.setReference(reference);
         melangeRepository.save(melange);
         return "saveMelange";
+    }
+
+    ////////------------------Utiliser mélange------------////////////
+    @RequestMapping(value = "/useMelange", method = RequestMethod.POST)
+    public String useMelange(Model model,
+                             @RequestParam(name = "page", defaultValue = "0") int p,
+                             @RequestParam(name = "size", defaultValue = "5") int s,
+                             @RequestParam(name = "ref_id") Long ref_id,
+                             @RequestParam(name = "ref")String ref,
+                             @RequestParam(name = "id")Long id,
+                             @RequestParam(name = "keyword", defaultValue ="") String kw){
+        Melange melange=melangeRepository.findById(id).get();
+        melange.setDateUtilisation(LocalDateTime.now());
+        melangeRepository.save(melange);
+        return "listMelange";
     }
 
     ////////------------------Modifier mélange------------////////////

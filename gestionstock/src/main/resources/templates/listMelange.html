@@ -36,7 +36,8 @@
                                     <th>Emplacement</th>
                                 </tr>
                                 <tr th:each="m:${listMelange}">
-                                    <td class="btn btn-success" th:if="${m.getJours()==0 || m.getJours()<60}" th:text="${m.id}"></td>
+<!--                                    <td class="btn btn-success" th:if="${m.getJours()==0 || m.getJours()<60}" th:text="${m.id}"></td>-->
+                                    <td th:text="${m.id}"></td>
                                     <td th:text="${ref}"></td>
                                     <td th:text="${m.getLot()}"></td>
                                     <td th:text="${m.getDateFabrication()}"></td>
@@ -45,15 +46,27 @@
                                     <td th:text="${m.dimension}"></td>
                                     <td th:text="${m.poids}"></td>
                                     <td th:text="${m.getEmplacement().getEmplacement()}"></td>
+
                                     <td>
-                                        <a th:href="@{editMelange(id=${m.getId()}, ref_id=${ref_id}, ref=${ref}, emp=${m.getEmplacement().getId()})}"
-                                           class="btn btn-outline-warning">Modifier</a>
+                                        <form th:action="@{useMelange(id=${m.getId()},ref_id=${ref_id}, ref=${ref})}">
+                                            <input type="hidden" name="id" th:value="${m.id}"/>
+                                            <input type="hidden" name="page" th:value="${currentPage}"/>
+                                            <input type="hidden" name="size" th:value="${size}"/>
+                                            <input type="hidden" name="ref_id" th:value="${ref_id}">
+                                            <input type="hidden" name="ref" th:value="${ref}">
+                                            <button class="btn btn-outline-primary">Retirer</button>
+                                        </form>
+                                    </td>
+
+                                    <td>
+                                        <form th:href="@{editMelange(id=${m.getId()}, ref_id=${ref_id}, ref=${ref}, emp=${m.getEmplacement().getId()})}"
+                                           class="btn btn-outline-warning">Modifier</form>
                                     </td>
                                     <td>
                                         <form th:action="@{deleteMelange(ref_id=${ref_id}, ref=${ref})}" method="post">
                                             <input type="hidden" name="id" th:value="${m.id}"/>
                                             <input type="hidden" name="page" th:value="${currentPage}"/>
-                                            <input type="hidden" name="size" th:value="${size}"/>
+                                            <input type="hidden" name="size" th:value="${5}"/>
                                             <input type="hidden" name="ref_id" th:value="${ref_id}">
                                             <input type="hidden" name="ref" th:value="${ref}">
                                             <button type="submit"
