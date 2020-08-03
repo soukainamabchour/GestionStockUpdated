@@ -94,8 +94,8 @@ public class StockController {
     }
 
     /////////////////---------------------- Melange-----------------------////////////////
-    /////////////////////////////////-----Lister mélanges----------////////////////////////////////
-    @RequestMapping(value = "/listermelanges", method = GET)
+    /////////////////////////////////-----Lister tous les mélanges----------////////////////////////////////
+    @RequestMapping(value = "/listerMelanges", method = GET)
     public String listermelanges(Model model,
                                  @RequestParam(name = "page", defaultValue = "0") int p,
                                  @RequestParam(name = "size", defaultValue = "5") int s,
@@ -110,7 +110,8 @@ public class StockController {
         model.addAttribute("keyword", kw);
         return "listerMelanges";
     }
-    @RequestMapping(value = "/listmelange", method = GET)
+    /////////////////////////////////-----Lister  mélanges par ref----------////////////////////////////////
+    @RequestMapping(value = "/listMelange", method = GET)
     public String listMelange(Model model,
                               @RequestParam(name = "page", defaultValue = "0") int p,
                               @RequestParam(name = "size", defaultValue = "5") int s,
@@ -184,7 +185,7 @@ public class StockController {
         melange.setEmplacement(null);
         melange.setDateUtilisation(LocalDateTime.now());
         melangeRepository.save(melange);
-        return "redirect:/melange?ref_id="+ref_id+"&ref="+ref+"&page=" + p + "&size=" + s + "&keyword="+kw+"";
+        return "redirect:/listMelange?ref_id="+ref_id+"&ref="+ref+"&page=" + p + "&size=" + s + "&keyword="+kw+"";
     }
 
     ////////------------------Modifier mélange------------////////////
@@ -217,7 +218,7 @@ public class StockController {
         model.addAttribute("ref", ref);
         model.addAttribute("ref_id", ref_id);
         melangeRepository.deleteById(id);
-        return "redirect:/melange?ref_id="+ref_id+"&ref="+ref+"&page=" + page + "&size=" + size + "&keyword="+keyword+"";
+        return "redirect:/listMelange?ref_id="+ref_id+"&ref="+ref+"&page=" + page + "&size=" + size + "&keyword="+keyword+"";
     }
 
 }
