@@ -30,6 +30,6 @@ public class Melange {
     private long jours;
     @ManyToOne
     private MelangeReference reference;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private MelangeEmplacement emplacement;
 }

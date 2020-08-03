@@ -40,6 +40,10 @@ public class StockController {
         return "homepage";
     }
 
+    @RequestMapping(value = "/melanges", method = RequestMethod.GET)
+    public String melanges() {
+        return "Melanges";
+    }
     /////////////////----------------------Reference Melange-----------------------////////////////
     ////////---------------Lister références------------///////////
     @GetMapping(path = "/melangeRef")
@@ -91,7 +95,22 @@ public class StockController {
 
     /////////////////---------------------- Melange-----------------------////////////////
     /////////////////////////////////-----Lister mélanges----------////////////////////////////////
-    @RequestMapping(value = "/melange", method = GET)
+    @RequestMapping(value = "/listermelanges", method = GET)
+    public String listermelanges(Model model,
+                                 @RequestParam(name = "page", defaultValue = "0") int p,
+                                 @RequestParam(name = "size", defaultValue = "5") int s,
+                                 @RequestParam(name = "keyword")String kw
+                                 ){
+        Page<Melange> melanges=melangeRepository.findAllByLotContains(kw, PageRequest.of(p,s));
+        model.addAttribute("result", melanges.getTotalElements() );
+        model.addAttribute("listMelange", melanges.getContent());
+        model.addAttribute("pages", new int[melanges.getTotalPages()]);
+        model.addAttribute("currentPage", p);
+        model.addAttribute("size", p);
+        model.addAttribute("keyword", kw);
+        return "listerMelanges";
+    }
+    @RequestMapping(value = "/listmelange", method = GET)
     public String listMelange(Model model,
                               @RequestParam(name = "page", defaultValue = "0") int p,
                               @RequestParam(name = "size", defaultValue = "5") int s,
@@ -99,11 +118,11 @@ public class StockController {
                               @RequestParam(name = "ref")String ref,
                               @RequestParam(name = "keyword", defaultValue ="") String kw
     ) {
-        Page<Melange> melange = melangeRepository.findByReference_IdAndLotContainsOrderByJoursAsc(ref_id,kw, PageRequest.of(p, s));
+        Page<Melange> melange = melangeRepository.findByReference_IdAndLotContainsOrderByJours(ref_id,kw, PageRequest.of(p, s));
         melange.forEach(m->{
             m.setJours(90- ChronoUnit.DAYS.between(m.getDateFabrication(), LocalDate.now()));
         });
-        model.addAttribute("result", melange.getTotalElements());
+        model.addAttribute("result", melange.getTotalElements() );
         model.addAttribute("listMelange", melange.getContent());
         model.addAttribute("pages", new int[melange.getTotalPages()]);
         model.addAttribute("currentPage", p);
@@ -121,8 +140,10 @@ public class StockController {
                               @RequestParam(name = "size", defaultValue = "5") int s,
                               @RequestParam(name = "ref_id")Long id,
                               @RequestParam(name = "ref")String ref){
-        Page<MelangeEmplacement> emplacements=melangeEmplacementRepository.findByEtatIsFalse(PageRequest.of(p, s));
+        List<MelangeEmplacement> emplacements=melangeEmplacementRepository.findByEtatIsFalse();
         Melange melange=new Melange();
+        MelangeReference reference=melangeReferenceRepository.findById(id).get();
+        melange.setReference(reference);
         model.addAttribute("melange", melange);
         model.addAttribute("ref_id", id);
         model.addAttribute("ref", ref);
@@ -157,6 +178,10 @@ public class StockController {
                              @RequestParam(name = "id")Long id,
                              @RequestParam(name = "keyword", defaultValue ="") String kw){
         Melange melange=melangeRepository.findById(id).get();
+        Long emp=melange.getEmplacement().getId();
+        MelangeEmplacement old_emp=melangeEmplacementRepository.findById(emp).get();
+        old_emp.setEtat(false);
+        melange.setEmplacement(null);
         melange.setDateUtilisation(LocalDateTime.now());
         melangeRepository.save(melange);
         return "redirect:/melange?ref_id="+ref_id+"&ref="+ref+"&page=" + p + "&size=" + s + "&keyword="+kw+"";
@@ -168,13 +193,13 @@ public class StockController {
                               @RequestParam(name = "page", defaultValue = "0") int p,
                               @RequestParam(name = "size", defaultValue = "5") int s,
                               @RequestParam(name = "ref_id")Long ref_id,
-                              @RequestParam(name = "ref")String ref,
-                              @RequestParam(name = "emp")Long emp){
+                              @RequestParam(name = "ref")String ref){
+        Melange melange= melangeRepository.findByIdAndReference_Id(id, ref_id);
+        Long emp=melange.getEmplacement().getId();
         MelangeEmplacement old_emp=melangeEmplacementRepository.findById(emp).get();
         old_emp.setEtat(false);
         melangeEmplacementRepository.save(old_emp);
-        Page<MelangeEmplacement> emplacements=melangeEmplacementRepository.findByEtatIsFalse(PageRequest.of(p, s));
-        Melange melange= melangeRepository.findByIdAndReference_Id(id, ref_id);
+        List<MelangeEmplacement> emplacements=melangeEmplacementRepository.findByEtatIsFalse();
         model.addAttribute("melange", melange);
         model.addAttribute("ref", ref);
         model.addAttribute("ref_id", ref_id);

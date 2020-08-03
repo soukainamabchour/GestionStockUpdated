@@ -24,7 +24,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Référence : </label>
-                                <label class="control-label" th:text="${ref}" th:value="${ref}" name="reference"></label>
+                                <label class="control-label" th:text="${melange.getReference().getReference()}" th:value="${melange.getReference().getReference()}" name="reference"></label>
                                 <a th:href="@{formMelangeRef}"
                                    class="btn btn-outline-primary btn-sm">Ajouter une nouvelle référence</a>
                             </div>
@@ -41,13 +41,15 @@
                             </div>
 
                             <div class="form-group">
-                                <label >Date de reception</label>
-                                <input type="date" name="dateReception" class="form-control" th:value="${melange.dateReception}">
-                            </div>
-                            <div class="form-group">
                                 <label >Date de fabrication</label>
                                 <input type="date" name="dateFabrication" class="form-control" th:value="${melange.dateFabrication}">
                             </div>
+
+                            <div class="form-group">
+                                <label >Date de reception</label>
+                                <input type="date" name="dateReception" class="form-control" th:value="${melange.dateReception}">
+                            </div>
+
                             <div class="form-group">
                                 <input type="text" class="form-control" name="dimension" placeholder="Dimension" th:value="${melange.dimension}">
                             </div>

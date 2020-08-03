@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css">
-        <script src="webjars/jquery/3.4.1/jquery.min.js"></script>
-        <script src="webjars/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link href="https://fonts.googleapis.com/css?family=Exo+2&display=swap" rel="stylesheet">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="webjars/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Exo+2&display=swap" rel="stylesheet">
 
-    </head>
-    <body>
-    <div class="container">
+</head>
+<body>
+<div class="container-fluid">
     <nav class="navbar navbar-expand-sm bg-light navbar-light">
         <!-- Brand/logo -->
         <a class="navbar-brand" href="#">
@@ -25,26 +25,42 @@
                     <a class="nav-link text-dark"  href="#">Acceuil</a>
                 </b>
             </li>
+            <li class="nav-item active">
+                <b>
+                    <a class="nav-link text-dark"  th:href="@{melanges}">Mélanges</a>
+                </b>
+            </li>
+            <li class="nav-item active">
+                <b>
+                    <a class="nav-link text-dark"  href="#">Inserts</a>
+                </b>
+            </li>
+            <li class="nav-item active">
+                <b>
+                    <a class="nav-link text-dark"  href="#">Produits Chimiques</a>
+                </b>
+            </li>
         </ul>
-           <ul class="navbar-nav ml-auto">
-                   <li class="nav-item dropdown">
-                       <a class="nav-link dropdown-toggle text-dark"  href="#" id="navbardrop" data-toggle="dropdown">
-                           <img th:src="@{'/images/person.svg'}">
-                       </a>
-                       <div class="dropdown-menu">
-                           <a class="dropdown-item" href="#">S'inscrire</a>
-                           <a class="dropdown-item" href="#">Se connecter</a>
-                           <a class="dropdown-item" href="#">Se déconnecter</a>
-                       </div>
-                   </li>
 
-           </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-dark"  href="#" id="navbardrop" data-toggle="dropdown">
+                    <img th:src="@{'/images/person.svg'}">
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">S'inscrire</a>
+                    <a class="dropdown-item" href="#">Se connecter</a>
+                    <a class="dropdown-item" href="#">Se déconnecter</a>
+                </div>
+            </li>
+
+        </ul>
     </nav>
-    </div>
-    <div style="margin-left:80px;">
-        <section layout:fragment="content">
-        </section>
-    </div>
+</div>
+<div class="mx-4">
+    <section layout:fragment="content">
+    </section>
+</div>
 
-    </body>
+</body>
 </html>
