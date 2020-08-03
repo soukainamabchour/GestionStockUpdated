@@ -96,12 +96,12 @@ public class StockController {
     /////////////////---------------------- Melange-----------------------////////////////
     /////////////////////////////////-----Lister tous les mélanges----------////////////////////////////////
     @RequestMapping(value = "/listerMelanges", method = GET)
-    public String listermelanges(Model model,
+    public String listerMelanges(Model model,
                                  @RequestParam(name = "page", defaultValue = "0") int p,
                                  @RequestParam(name = "size", defaultValue = "5") int s,
-                                 @RequestParam(name = "keyword")String kw
+                                 @RequestParam(name = "keyword", defaultValue = "")String kw
                                  ){
-        Page<Melange> melanges=melangeRepository.findAllByLotContains(kw, PageRequest.of(p,s));
+        Page<Melange> melanges=melangeRepository.findAllByLotContainsOrderByJoursAsc(kw, PageRequest.of(p,s));
         model.addAttribute("result", melanges.getTotalElements() );
         model.addAttribute("listMelange", melanges.getContent());
         model.addAttribute("pages", new int[melanges.getTotalPages()]);
@@ -119,10 +119,7 @@ public class StockController {
                               @RequestParam(name = "ref")String ref,
                               @RequestParam(name = "keyword", defaultValue ="") String kw
     ) {
-        Page<Melange> melange = melangeRepository.findByReference_IdAndLotContainsOrderByJours(ref_id,kw, PageRequest.of(p, s));
-        melange.forEach(m->{
-            m.setJours(90- ChronoUnit.DAYS.between(m.getDateFabrication(), LocalDate.now()));
-        });
+        Page<Melange> melange = melangeRepository.findByReference_IdAndLotContainsOrderByJoursAsc(ref_id,kw, PageRequest.of(p, s));
         model.addAttribute("result", melange.getTotalElements() );
         model.addAttribute("listMelange", melange.getContent());
         model.addAttribute("pages", new int[melange.getTotalPages()]);
@@ -161,6 +158,7 @@ public class StockController {
                              @RequestParam(name = "ref")String ref) {
         MelangeReference reference = melangeReferenceRepository.findById(id).get();
         melange.getEmplacement().setEtat(true);
+        melange.setJours(90-ChronoUnit.DAYS.between(melange.getDateFabrication(), LocalDate.now()));
         model.addAttribute("melange", melange);
         model.addAttribute("ref_id", id);
         model.addAttribute("ref", ref);
@@ -220,5 +218,37 @@ public class StockController {
         melangeRepository.deleteById(id);
         return "redirect:/listMelange?ref_id="+ref_id+"&ref="+ref+"&page=" + page + "&size=" + size + "&keyword="+keyword+"";
     }
+    /////////////////---------------------- Emplacement Melange-----------------------////////////////
 
+    /////////////////////////////////-----Lister les emplacements----------////////////////////////////////
+    @RequestMapping(value = "/listEmplacements", method = GET)
+    public String listEmplacements(Model model,
+                                   @RequestParam(name = "page", defaultValue = "0") int p,
+                                   @RequestParam(name = "size", defaultValue = "5") int s){
+        Page<MelangeEmplacement> emplacements=melangeEmplacementRepository.findAll(PageRequest.of(p,s));
+        model.addAttribute("result", emplacements.getTotalElements() );
+        model.addAttribute("emplacements", emplacements.getContent());
+        model.addAttribute("pages", new int[emplacements.getTotalPages()]);
+        model.addAttribute("currentPage", p);
+        model.addAttribute("size", p);
+        return "listEmplacements";
+    }
+
+    /////////////////////////////////-----Ajouter emplacement----------////////////////////////////////
+    @RequestMapping(value = "/formMelangeEmp", method = GET)
+    public String formMelangeEmp(Model model){
+        MelangeEmplacement emplacement=new MelangeEmplacement();
+        emplacement.setEtat(false);
+        model.addAttribute("emplacement", emplacement);
+        return "formMelangeEmp";
+    }
+
+    ////////------------------Enregistrer emplacement------------////////////
+    @RequestMapping(value = "/addMelangeEmp", method = RequestMethod.POST)
+    public String addMelangeEmp(@Valid MelangeEmplacement melangeEmp, BindingResult br, Model model) {
+        model.addAttribute("emplacement", melangeEmp);
+        if (br.hasErrors()) return "formMelangeEmp";
+        melangeEmplacementRepository.save(melangeEmp);
+        return "saveMelangeEmp";
+    }
 }

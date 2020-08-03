@@ -13,7 +13,7 @@
                 <div class="card">
                     <h5 class="card-header">Mélanges</h5>
                     <div class="card-body">
-                        <form method="get" th:action="@{listermelanges}">
+                        <form method="get" th:action="@{listerMelanges}">
                             <div class="form-inline">
                                 <input class="form-control" type="text" name="keyword" id="keyword"
                                        placeholder="Chercher un mélange" th:value="${keyword}">
@@ -47,31 +47,20 @@
                                         th:if="${m.jours<=90 && m.jours>30}"></td>
                                     <td th:text="${m.jours}" class="btn btn-warning"
                                         th:if="${m.jours<=30 && m.jours>0}"></td>
-                                    <td th:text="${m.jours}" class="btn btn-danger" th:if="${m.jours<=0}"></td>
+                                    <td class="btn btn-danger" th:if="${m.jours<=0}">Expiré</td>
                                     <td th:if="${m.getEmplacement()!=null}"
                                         th:text="${m.getEmplacement().getEmplacement()}"></td>
                                     <td th:if="${m.getEmplacement()==null}">En cours d'utilisation</td>
-                                    <td>
-                                        <form th:action="@{useMelange(id=${m.getId()},ref_id=${m.getReference().getId()})}"
-                                              method="post">
-                                            <input type="hidden" name="id" th:value="${m.id}"/>
-                                            <input type="hidden" name="page" th:value="${currentPage}"/>
-                                            <input type="hidden" name="size" th:value="${5}"/>
-                                            <input type="hidden" name="ref_id" th:value="${m.getReference().getId()}">
-                                            <button class="btn btn-outline-primary">Retirer</button>
-                                        </form>
-                                    </td>
                                 </tr>
                             </table>
                         </div>
                         <div class="card-footer">
                             <div class="container justify-content-center mt-3 container-fluid">
                                 <ul class="nav nav-pills">
-                                    <input type="hidden" th:value="${listMelange.get(1).getReference().getId()}" name="id">
                                     <li th:each="page,status:${pages}">
                                         <a
                                                 th:class="${status.index==currentPage?'btn btn-outline-primary':'btn'}"
-                                                th:href="@{melange(page=${status.index}, ref_id=${listMelange.get(1).getReference().getId()})}"
+                                                th:href="@{listerMelange(page=${status.index})}"
                                                 th:text="${status.index+1}"></a>
                                     </li>
                                 </ul>

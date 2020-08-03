@@ -38,7 +38,7 @@
                                 </tr>
                                 <tr th:each="m:${listMelange}">
                                     <!--                                    <td class="btn btn-success" th:if="${m.getJours()==0 || m.getJours()<60}" th:text="${m.id}"></td>-->
-                                    <td th:text="${m.id}"></td>
+                                    <td th:text="${m.getId()}"></td>
                                     <!--                                   wrong <td th:text="${ref}"></td>-->
                                     <td th:text="${m.getReference().getReference()}"></td>
                                     <td th:text="${m.getLot()}"></td>
@@ -51,7 +51,7 @@
                                         th:if="${m.jours<=90 && m.jours>30}"></td>
                                     <td th:text="${m.jours}" class="btn btn-warning"
                                         th:if="${m.jours<=30 && m.jours>0}"></td>
-                                    <td th:text="${m.jours}" class="btn btn-danger" th:if="${m.jours<=0}"></td>
+                                    <td class="btn btn-danger" th:if="${m.jours<=0}">Expiré</td>
                                     <td th:if="${m.getEmplacement()!=null}"
                                         th:text="${m.getEmplacement().getEmplacement()}"></td>
                                     <td th:if="${m.getEmplacement()==null}">En cours d'utilisation</td>
@@ -100,7 +100,7 @@
                                     <li th:each="page,status:${pages}">
                                         <a
                                                 th:class="${status.index==currentPage?'btn btn-outline-primary':'btn'}"
-                                                th:href="@{melange(page=${status.index}, ref_id=${ref_id}, ref=${ref})}"
+                                                th:href="@{listMelange(page=${status.index}, ref_id=${ref_id}, ref=${ref})}"
                                                 th:text="${status.index+1}"></a>
                                     </li>
                                 </ul>
