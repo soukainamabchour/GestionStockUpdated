@@ -22,6 +22,12 @@
                                         <input type="password" class="form-control" placeholder="Mot de passe" name="password">
                                     </div>
                                     <div>
+                                        <select name="roles" style="border-radius: 50px">
+                                            <option th:each="role:${roles}" th:value="${role.role}"
+                                                    th:text="${role.getRole()}"></option>
+                                        </select>
+                                        <div>
+                                    </div>
                                         <button class="btn btn-outline-success" type="submit">S'incrire</button>
                                     </div>
                                 </div>

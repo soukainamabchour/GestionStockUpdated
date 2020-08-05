@@ -31,6 +31,8 @@ public class UserController {
     @RequestMapping(value="formUser", method = RequestMethod.GET)
     public String formUser(Model model) {
         model.addAttribute("user", new User());
+        List<Role> roles =roleRepository.findAll();
+        model.addAttribute("roles", roles);
         return "formUser";
     }
 
@@ -41,10 +43,10 @@ public class UserController {
         model.addAttribute("user", user);
         if (br.hasErrors()) return "formUser";
         userRepository.save(user);
-        return "redirect:/UserRole?username="+user.getUsername();
+        return "homepage";
     }
 
-    @RequestMapping(value = "UserRole", method = RequestMethod.GET)
+ /*   @RequestMapping(value = "UserRole", method = RequestMethod.GET)
     public String UserRole(Model model,
                            @RequestParam(name = "username")String username){
         User user=userRepository.findByUsername(username);
@@ -56,5 +58,5 @@ public class UserController {
     @RequestMapping(value = "/addUserRole", method = RequestMethod.POST)
     public String addUserRole(@Valid User user, BindingResult br, Model model) {
         return "homepage";
-    }
+    }*/
 }
