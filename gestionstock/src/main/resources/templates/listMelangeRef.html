@@ -45,7 +45,11 @@
                                             <input type="hidden" name="id" th:value="${v.id}"/>
                                             <input type="hidden" name="page" th:value="${currentPage}"/>
                                             <input type="hidden" name="size" th:value="${size}"/>
-                                            <button type="submit"
+                                            <button disabled th:if="${v.melanges.size()!=0}" type="submit"
+                                                    class="btn btn-outline-danger">
+                                                Supprimer
+                                            </button>
+                                            <button th:if="${v.melanges.size()==0}" type="submit"
                                                     class="btn btn-outline-danger"
                                                     onclick="return confirm('êtes-vous sûr de vouloir supprimer?');">
                                                 Supprimer

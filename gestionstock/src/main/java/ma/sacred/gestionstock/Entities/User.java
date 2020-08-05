@@ -11,14 +11,15 @@ import java.util.Collection;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class MelangeReference implements Serializable {
+public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String reference;
-    @OneToMany(mappedBy = "reference")
-    private Collection<Melange> melanges;
+    private String username;
+    private String password;
+    private boolean active;
+    @ManyToMany
+    @JoinTable(name = "users_roles")
+    private Collection<Role> roles;
 }

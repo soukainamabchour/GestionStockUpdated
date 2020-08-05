@@ -9,6 +9,7 @@ import ma.sacred.gestionstock.Entities.MelangeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,12 +40,18 @@ public class StockController {
         return "homepage";
     }
 
+    @RequestMapping(value = "/notAuthorized", method = RequestMethod.POST)
+    public String notAuthorized() {
+        return "notAuthorized";
+    }
+
     @RequestMapping(value = "/melanges", method = RequestMethod.GET)
     public String melanges() {
         return "Melanges";
     }
     /////////////////----------------------Reference Melange-----------------------////////////////
     ////////---------------Lister références------------///////////
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @GetMapping(path = "/melangeRef")
     public String listRefMelange(Model model,
                                  @RequestParam(name = "page", defaultValue = "0") int p,
@@ -60,6 +67,7 @@ public class StockController {
     }
 
     ////////------------------Ajouter référence------------////////////
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/formMelangeRef", method = RequestMethod.GET)
     public String formMelangeRef(Model model) {
         model.addAttribute("melangeRef", new MelangeReference());
@@ -68,6 +76,7 @@ public class StockController {
 
 
     ////////------------------Enregistrer référence------------////////////
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/addMelangeRef", method = RequestMethod.POST)
     public String addMelangeRef(@Valid MelangeReference melangeRef, BindingResult br, Model model) {
         model.addAttribute("melangeRef", melangeRef);
@@ -77,6 +86,7 @@ public class StockController {
     }
 
      ////////------------------Modifier référence------------////////////
+     @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/editMelangeRef", method = RequestMethod.GET)
     public String editMelangeRef(Model model, Long id) {
         MelangeReference melangeRef = melangeReferenceRepository.findById(id).get();
@@ -86,6 +96,7 @@ public class StockController {
     }
 
     ////////------------------Supprimer référence------------////////////
+    @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/deleteMelangeRef", method = RequestMethod.POST)
     public String deleteMelangeRef(Long id, int page, int size) {
         melangeReferenceRepository.deleteById(id);

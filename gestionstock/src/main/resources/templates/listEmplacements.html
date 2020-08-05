@@ -43,7 +43,7 @@
                                                      onclick="return confirm('êtes-vous sûr de vouloir supprimer?');">
                                                  Supprimer
                                              </button>
-                                             <button th:if="${emp.etat==true}" type="submit"
+                                             <button disabled th:if="${emp.etat==true}" type="submit"
                                                      class="btn btn-outline-danger disabled">
                                                  Supprimer
                                              </button>
