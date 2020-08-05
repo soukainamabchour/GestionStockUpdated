@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -43,10 +45,10 @@ public class UserController {
         model.addAttribute("user", user);
         if (br.hasErrors()) return "formUser";
         userRepository.save(user);
-        return "homepage";
+        return "redirect:/UserRole?username="+user.getUsername();
     }
 
- /*   @RequestMapping(value = "UserRole", method = RequestMethod.GET)
+    @RequestMapping(value = "UserRole", method = RequestMethod.GET)
     public String UserRole(Model model,
                            @RequestParam(name = "username")String username){
         User user=userRepository.findByUsername(username);
@@ -56,7 +58,12 @@ public class UserController {
         return "addUserRole";
     }
     @RequestMapping(value = "/addUserRole", method = RequestMethod.POST)
-    public String addUserRole(@Valid User user, BindingResult br, Model model) {
+    public String addUserRole(String role, String username) {
+        User user=userRepository.findByUsername(username);
+        Role r=roleRepository.findByRole(role);
+        user.getRoles().add(r);
+        userRepository.save(user);
         return "homepage";
-    }*/
+    }
+
 }

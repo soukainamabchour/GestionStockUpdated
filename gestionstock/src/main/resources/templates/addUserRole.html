@@ -19,7 +19,7 @@
                                     <input type="text" class="form-control" th:value="${user.username}" th:text="${user.username}" name="username">
                                 </div>
                                 <div class="col">
-                                    <select name="emplacement" style="border-radius: 50px">
+                                    <select name="role" style="border-radius: 50px">
                                         <option th:each="role:${roles}" th:value="${role.role}"
                                                 th:text="${role.getRole()}"></option>
                                     </select>
