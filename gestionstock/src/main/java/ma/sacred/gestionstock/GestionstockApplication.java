@@ -21,9 +21,7 @@ public class GestionstockApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		service.initMelangeEmplacement();
-		service.initMelangeRef();
-		service.initMelange();
+
 
 	}
 }

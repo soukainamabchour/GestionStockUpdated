@@ -34,7 +34,6 @@ public class StockController {
     @Autowired
     MelangeEmplacementRepository melangeEmplacementRepository;
 
-
     @RequestMapping(value = "/homepage", method = RequestMethod.GET)
     public String homepage() {
         return "homepage";
