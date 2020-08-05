@@ -1,34 +1,60 @@
 package ma.sacred.gestionstock.Web;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
+import ma.sacred.gestionstock.Dao.RoleRepository;
+import ma.sacred.gestionstock.Dao.UserRepository;
+import ma.sacred.gestionstock.Entities.Role;
+import ma.sacred.gestionstock.Entities.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.security.Security;
-import java.util.ArrayList;
-import java.util.HashMap;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @Controller
+@Secured(value = {"ROLE_ADMIN"})
 public class UserController {
 
-    @RequestMapping(value="/getLoggedUser")
-    public Map<String ,Object> getLoggedUser(HttpServletRequest httpServletRequest){
-        HttpSession httpSession=httpServletRequest.getSession();
-        SecurityContext securityContext= (SecurityContext) httpSession.getAttribute("SPRING_SECURITY_CONTEXT");
-        String username=securityContext.getAuthentication().getName();
-        List<String> roles=new ArrayList<>();
-        for (GrantedAuthority ga:securityContext.getAuthentication().getAuthorities()) {
-            roles.add(ga.getAuthority());
-        }
-        Map<String, Object> params=new HashMap<>();
-        params.put("username", username);
-        params.put("roles", roles);
-        return params;
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
+
+    /////////////////----------------------Utilisateur-----------------------////////////////
+    ////////---------------Ajouter utilisateur------------///////////
+    @RequestMapping(value="formUser", method = RequestMethod.GET)
+    public String formUser(Model model) {
+        model.addAttribute("user", new User());
+        return "formUser";
     }
 
+
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    public String addUser(@Valid User user, BindingResult br, Model model) {
+        user.setActive(true);
+        model.addAttribute("user", user);
+        if (br.hasErrors()) return "formUser";
+        userRepository.save(user);
+        return "redirect:/UserRole?username="+user.getUsername();
+    }
+
+    @RequestMapping(value = "UserRole", method = RequestMethod.GET)
+    public String UserRole(Model model,
+                           @RequestParam(name = "username")String username){
+        User user=userRepository.findByUsername(username);
+        List<Role> roles=roleRepository.findAll();
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roles);
+        return "addUserRole";
+    }
+    @RequestMapping(value = "/addUserRole", method = RequestMethod.POST)
+    public String addUserRole(@Valid User user, BindingResult br, Model model) {
+        return "homepage";
+    }
 }
