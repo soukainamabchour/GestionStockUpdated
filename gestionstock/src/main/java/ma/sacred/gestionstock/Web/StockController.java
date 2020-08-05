@@ -224,11 +224,13 @@ public class StockController {
     @RequestMapping(value = "/listEmplacements", method = GET)
     public String listEmplacements(Model model,
                                    @RequestParam(name = "page", defaultValue = "0") int p,
-                                   @RequestParam(name = "size", defaultValue = "5") int s){
-        Page<MelangeEmplacement> emplacements=melangeEmplacementRepository.findAll(PageRequest.of(p,s));
+                                   @RequestParam(name = "size", defaultValue = "5") int s,
+                                   @RequestParam(name = "keyword", defaultValue = "")String kw){
+        Page<MelangeEmplacement> emplacements=melangeEmplacementRepository.findByEmplacementContainsOrderByEmplacement(kw, PageRequest.of(p,s));
         model.addAttribute("result", emplacements.getTotalElements() );
         model.addAttribute("emplacements", emplacements.getContent());
         model.addAttribute("pages", new int[emplacements.getTotalPages()]);
+        model.addAttribute("keyword", kw);
         model.addAttribute("currentPage", p);
         model.addAttribute("size", p);
         return "listEmplacements";
@@ -250,5 +252,11 @@ public class StockController {
         if (br.hasErrors()) return "formMelangeEmp";
         melangeEmplacementRepository.save(melangeEmp);
         return "saveMelangeEmp";
+    }
+    ////////------------------Supprimer emplacement------------////////////
+    @RequestMapping(value = "/deleteMelangeEmp", method = RequestMethod.POST)
+    public String deleteMelangeEmp(Long id, int page, int size) {
+       melangeEmplacementRepository.deleteById(id);
+        return "redirect:/listEmplacements?page=" + page + "&size=" + size + "";
     }
 }

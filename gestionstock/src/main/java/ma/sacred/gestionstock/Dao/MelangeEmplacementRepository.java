@@ -10,5 +10,6 @@ import java.util.List;
 public interface MelangeEmplacementRepository extends JpaRepository<MelangeEmplacement, Long> {
     public Page<MelangeEmplacement> findById(Long id, Pageable page);
     public List<MelangeEmplacement> findByEtatIsFalse();
+    public Page<MelangeEmplacement> findByEmplacementContainsOrderByEmplacement(String kw, Pageable pageable);
 }
 
