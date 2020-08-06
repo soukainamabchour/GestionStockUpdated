@@ -105,6 +105,7 @@ public class StockController {
 
     /////////////////---------------------- Melange-----------------------////////////////
     /////////////////////////////////-----Lister tous les mélanges----------////////////////////////////////
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/listerMelanges", method = GET)
     public String listerMelanges(Model model,
                                  @RequestParam(name = "page", defaultValue = "0") int p,
@@ -120,7 +121,55 @@ public class StockController {
         model.addAttribute("keyword", kw);
         return "listerMelanges";
     }
+
+    /////////////////////////////////-----Retirer----------////////////////////////////////
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @RequestMapping(value = "/useMelanges", method = RequestMethod.POST)
+    public String useMelanges(Model model,
+                             @RequestParam(name = "page", defaultValue = "0") int p,
+                             @RequestParam(name = "size", defaultValue = "5") int s,
+                             @RequestParam(name = "id")Long id,
+                             @RequestParam(name = "keyword", defaultValue ="") String kw){
+        Melange melange=melangeRepository.findById(id).get();
+        Long emp=melange.getEmplacement().getId();
+        MelangeEmplacement old_emp=melangeEmplacementRepository.findById(emp).get();
+        old_emp.setEtat(false);
+        melange.setEmplacement(null);
+        melange.setDateUtilisation(LocalDateTime.now());
+        melangeRepository.save(melange);
+        return "redirect:/listerMelanges?page=" + p + "&size=" + s + "&keyword="+kw+"";
+    }
+
+    /////////////////////////////////-----Ajouter----------////////////////////////////////
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @RequestMapping(value = "/formMelanges", method = RequestMethod.GET)
+    public String formMelanges(Model model,
+                              @RequestParam(name = "page", defaultValue = "0") int p,
+                              @RequestParam(name = "size", defaultValue = "5") int s){
+        List<MelangeReference> references=melangeReferenceRepository.findAll();
+        List<MelangeEmplacement> emplacements=melangeEmplacementRepository.findByEtatIsFalse();
+        Melange melange=new Melange();
+        model.addAttribute("melange", melange);
+        model.addAttribute("emplacement",emplacements);
+        model.addAttribute("references", references);
+        return "formMelanges";
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @RequestMapping(value = "/addMelanges", method = RequestMethod.POST)
+    public String addMelanges(@Valid Melange melange, BindingResult br, Model model,
+                             @RequestParam(name = "page", defaultValue = "0") int p,
+                             @RequestParam(name = "size", defaultValue = "5") int s) {
+        melange.getEmplacement().setEtat(true);
+        melange.setJours(90-ChronoUnit.DAYS.between(melange.getDateFabrication(), LocalDate.now()));
+        model.addAttribute("melange", melange);
+        melangeRepository.save(melange);
+        return "saveMelanges";
+    }
+
     /////////////////////////////////-----Lister  mélanges par ref----------////////////////////////////////
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/listMelange", method = GET)
     public String listMelange(Model model,
                               @RequestParam(name = "page", defaultValue = "0") int p,
@@ -142,6 +191,7 @@ public class StockController {
     }
 
     ////////------------------Ajouter mélange------------////////////
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/formMelange", method = RequestMethod.GET)
     public String formMelange(Model model,
                               @RequestParam(name = "page", defaultValue = "0") int p,
@@ -160,6 +210,7 @@ public class StockController {
     }
 
     ////////------------------Enregistrer mélange------------////////////
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/addMelange", method = RequestMethod.POST)
     public String addMelange(@Valid Melange melange, BindingResult br, Model model,
                              @RequestParam(name = "page", defaultValue = "0") int p,
@@ -178,6 +229,7 @@ public class StockController {
     }
 
     ////////------------------Utiliser mélange------------////////////
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/useMelange", method = RequestMethod.POST)
     public String useMelange(Model model,
                              @RequestParam(name = "page", defaultValue = "0") int p,
@@ -197,6 +249,7 @@ public class StockController {
     }
 
     ////////------------------Modifier mélange------------////////////
+    @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/editMelange", method = RequestMethod.GET)
     public String editMelange(Model model, Long id,
                               @RequestParam(name = "page", defaultValue = "0") int p,
@@ -217,6 +270,7 @@ public class StockController {
     }
 
     ////////------------------Supprimer mélange------------////////////
+    @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/deleteMelange", method = RequestMethod.POST)
     public String deleteMelange(Model model, Long id,
                                 @RequestParam(name = "ref_id")Long ref_id,
@@ -231,6 +285,7 @@ public class StockController {
     /////////////////---------------------- Emplacement Melange-----------------------////////////////
 
     /////////////////////////////////-----Lister les emplacements----------////////////////////////////////
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/listEmplacements", method = GET)
     public String listEmplacements(Model model,
                                    @RequestParam(name = "page", defaultValue = "0") int p,
@@ -247,6 +302,7 @@ public class StockController {
     }
 
     /////////////////////////////////-----Ajouter emplacement----------////////////////////////////////
+    @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/formMelangeEmp", method = GET)
     public String formMelangeEmp(Model model){
         MelangeEmplacement emplacement=new MelangeEmplacement();
@@ -256,6 +312,7 @@ public class StockController {
     }
 
     ////////------------------Enregistrer emplacement------------////////////
+    @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/addMelangeEmp", method = RequestMethod.POST)
     public String addMelangeEmp(@Valid MelangeEmplacement melangeEmp, BindingResult br, Model model) {
         model.addAttribute("emplacement", melangeEmp);
@@ -264,6 +321,7 @@ public class StockController {
         return "saveMelangeEmp";
     }
     ////////------------------Supprimer emplacement------------////////////
+    @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/deleteMelangeEmp", method = RequestMethod.POST)
     public String deleteMelangeEmp(Long id, int page, int size) {
        melangeEmplacementRepository.deleteById(id);
