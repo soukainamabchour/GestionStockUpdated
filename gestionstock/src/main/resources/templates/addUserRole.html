@@ -16,11 +16,11 @@
                         <form method="post" th:action="@{addUserRole}">
                             <div class="row">
                                 <div class="col">
-                                    <input type="text" class="form-control" th:value="${user.username}" th:text="${user.username}" name="username">
+                                    <input type="text" class="form-control" th:value="${user.username}" name="username">
                                 </div>
                                 <div class="col">
                                     <select name="role" style="border-radius: 50px">
-                                        <option th:each="role:${roles}" th:value="${role.role}"
+                                        <option th:each="role:${roles}" th:value="${role.getRole()}"
                                                 th:text="${role.getRole()}"></option>
                                     </select>
                                 </div>

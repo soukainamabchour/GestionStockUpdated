@@ -32,9 +32,12 @@ public class UserController {
     ////////---------------Ajouter utilisateur------------///////////
     @RequestMapping(value="formUser", method = RequestMethod.GET)
     public String formUser(Model model) {
-        model.addAttribute("user", new User());
-        List<Role> roles =roleRepository.findAll();
-        model.addAttribute("roles", roles);
+        User user=new User();
+        Collection<Role> roles=new ArrayList<Role>();
+        user.setRoles(roles);
+        model.addAttribute("user",user);
+        List<Role> r =roleRepository.findAll();
+        model.addAttribute("roles", r);
         return "formUser";
     }
 
@@ -58,12 +61,14 @@ public class UserController {
         return "addUserRole";
     }
     @RequestMapping(value = "/addUserRole", method = RequestMethod.POST)
-    public String addUserRole(String role, String username) {
+    public String addUserRole(Model model, String role, String username) {
         User user=userRepository.findByUsername(username);
         Role r=roleRepository.findByRole(role);
         user.getRoles().add(r);
         userRepository.save(user);
-        return "homepage";
+        model.addAttribute("user", user);
+        model.addAttribute("role", r);
+        return "saveUser";
     }
 
 }
