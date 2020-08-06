@@ -33,6 +33,7 @@ public class UserController {
 
     /////////////////----------------------Utilisateur-----------------------////////////////
     ////////---------------Afficher utilisateur------------///////////
+    @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "listUsers", method = RequestMethod.GET)
     public String listUSers(Model model,
                                  @RequestParam(name = "page", defaultValue = "0") int p,
@@ -47,6 +48,7 @@ public class UserController {
         return "listUsers";
     }
     ////////---------------Ajouter utilisateur------------///////////
+    @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value="formUser", method = RequestMethod.GET)
     public String formUser(Model model) {
         User user=new User();
@@ -58,7 +60,7 @@ public class UserController {
         return "formUser";
     }
 
-
+    @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public String addUser(@Valid User user, BindingResult br, Model model) {
         user.setActive(true);
@@ -68,6 +70,7 @@ public class UserController {
         return "redirect:/UserRole?username="+user.getUsername();
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "UserRole", method = RequestMethod.GET)
     public String UserRole(Model model,
                            @RequestParam(name = "username")String username){
@@ -77,6 +80,7 @@ public class UserController {
         model.addAttribute("roles", roles);
         return "addUserRole";
     }
+    @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/addUserRole", method = RequestMethod.POST)
     public String addUserRole(Model model, String role, String username) {
         User user=userRepository.findByUsername(username);
@@ -88,7 +92,9 @@ public class UserController {
         return "saveUser";
     }
 
+
     ////////---------------Modifier utilisateur------------///////////
+    @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/editUser", method = RequestMethod.GET)
     public String editMelangeRef(Model model, String username) {
         User user=userRepository.findByUsername(username);
@@ -97,6 +103,7 @@ public class UserController {
     }
 
     ////////---------------Supprimer utilisateur------------///////////
+    @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
     public String deleteUser(String username, int page, int size) {
         userRepository.deleteById(username);
