@@ -2,9 +2,12 @@ package ma.sacred.gestionstock.Web;
 
 import ma.sacred.gestionstock.Dao.RoleRepository;
 import ma.sacred.gestionstock.Dao.UserRepository;
+import ma.sacred.gestionstock.Entities.MelangeReference;
 import ma.sacred.gestionstock.Entities.Role;
 import ma.sacred.gestionstock.Entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +32,20 @@ public class UserController {
     RoleRepository roleRepository;
 
     /////////////////----------------------Utilisateur-----------------------////////////////
+    ////////---------------Afficher utilisateur------------///////////
+    @RequestMapping(value = "listUsers", method = RequestMethod.GET)
+    public String listUSers(Model model,
+                                 @RequestParam(name = "page", defaultValue = "0") int p,
+                                 @RequestParam(name = "size", defaultValue = "5") int s,
+                                 @RequestParam(name = "keyword", defaultValue = "") String kw) {
+        Page<User> users=userRepository.findByUsernameContains(kw, PageRequest.of(p,s));
+        model.addAttribute("users", users.getContent());
+        model.addAttribute("pages", new int[users.getTotalPages()]);
+        model.addAttribute("currentPage", p);
+        model.addAttribute("size", s);
+        model.addAttribute("keyword", kw);
+        return "listUsers";
+    }
     ////////---------------Ajouter utilisateur------------///////////
     @RequestMapping(value="formUser", method = RequestMethod.GET)
     public String formUser(Model model) {
@@ -71,4 +88,18 @@ public class UserController {
         return "saveUser";
     }
 
+    ////////---------------Modifier utilisateur------------///////////
+    @RequestMapping(value = "/editUser", method = RequestMethod.GET)
+    public String editMelangeRef(Model model, String username) {
+        User user=userRepository.findByUsername(username);
+        model.addAttribute("user", user);
+        return "formUser";
+    }
+
+    ////////---------------Supprimer utilisateur------------///////////
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
+    public String deleteUser(String username, int page, int size) {
+        userRepository.deleteById(username);
+        return "redirect:/listUsers?page=" + page + "&size=" + size + "";
+    }
 }

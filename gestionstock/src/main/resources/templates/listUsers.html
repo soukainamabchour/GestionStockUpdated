@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="theme">
+<head>
+    <title>Liste des utilisateurs</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container justify-content-center mt-3 container-fluid">
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <h5 class="card-header">Utilisateurs</h5>
+                    <div class="card-body">
+                        <form method="get" th:action="@{listUsers}">
+                            <div class="form-inline">
+                                <input class="form-control" type="text" name="keyword" id="keyword"
+                                       placeholder="Chercher un utilisateur" th:value="${keyword}">
+                                <button class="btn btn-outline-primary" type="submit">Chercher</button>
+                            </div>
+                        </form>
+                        <div class="container mt-3">
+                            <table class="table table-hover" id="table">
+                                <tr>
+                                    <th>Nom d'utilisateur</th>
+                                    <th>Nom </th>
+                                    <th>Prénom</th>
+                                    <th>Profession</th>
+                                    <th>Rôle</th>
+                                </tr>
+                                <tr th:each="u:${users}">
+                                    <td th:text="${u.getUsername()}"></td>
+                                    <td th:text="${u.getNom()}"></td>
+                                    <td th:text="${u.getPrenom()}"></td>
+                                    <td th:text="${u.getProfession()}"></td>
+                                    <td th:each="r:${u.getRoles()}" th:text="${r.role}">
+                                    </td>
+                                    <td>
+                                        <a th:href="@{editUser(username=${u.username})}"
+                                           class="btn btn-outline-warning">Modifier</a>
+                                    </td>
+                                    <td>
+                                        <form th:action="@{deleteUser}" method="post">
+                                            <input type="hidden" name="username" th:value="${u.username}"/>
+                                            <input type="hidden" name="page" th:value="${currentPage}"/>
+                                            <input type="hidden" name="size" th:value="${size}"/>
+                                            <button type="submit"
+                                                    class="btn btn-outline-danger"
+                                                    onclick="return confirm('êtes-vous sûr de vouloir supprimer?');">
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                            <a th:href="@{formUser}"
+                               class="btn btn-block btn-outline-success mb-3">Ajouter un utilisateur</a>
+                        </div>
+                        <div class="card-footer">
+                            <div class="container mt-3">
+                                <ul class="nav nav-pills">
+                                    <li th:each="page,status:${pages}">
+                                        <a
+                                                th:class="${status.index==currentPage?'btn btn-outline-primary':'btn'}"
+                                                th:href="@{listUsers(page=${status.index}, keyword=${keyword})}"
+                                                th:text="${status.index+1}"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
