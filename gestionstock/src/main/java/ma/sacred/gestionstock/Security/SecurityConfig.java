@@ -20,7 +20,9 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    public void globalConfig(AuthenticationManagerBuilder auth, DataSource dataSource) throws Exception {
+    DataSource dataSource;
+    @Autowired
+    public void globalConfig(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder passwordEncoder = passwordEncoder();
         System.out.println(passwordEncoder.encode("1234"));
 

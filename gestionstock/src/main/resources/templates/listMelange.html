@@ -64,7 +64,8 @@
                                             <input type="hidden" name="size" th:value="${5}"/>
                                             <input type="hidden" name="ref_id" th:value="${ref_id}">
                                             <input type="hidden" th:value="${ref}" name="ref">
-                                            <button class="btn btn-outline-info">Retirer</button>
+                                            <button disabled th:if="${m.emplacement==null}" class="btn btn-outline-info">Retirer</button>
+                                            <button th:if="${m.emplacement!=null}" class="btn btn-outline-info">Retirer</button>
                                         </form>
                                     </td>
 

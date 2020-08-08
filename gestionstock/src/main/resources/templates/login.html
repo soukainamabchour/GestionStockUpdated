@@ -18,7 +18,8 @@
                     <div class="card-body">
                         <h3 class="card-title text-muted">Authentification!</h3>
                         <hr>
-                        <form th:action="@{login}" method="post" class="was-validated">
+                        <div th:if="${param.error}" class="text-danger">Nom d'utilisateur ou mot de passe érroné</div>
+                        <form th:action="@{login}" method="post">
                             <div class="form-group row ml-4">
                                 <input type="text" class="form-control" placeholder="Nom d'utilisateur" name="username">
                             </div>

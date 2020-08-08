@@ -36,7 +36,7 @@
                                 <span class="text-danger" th:errors="${melange.lot}"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Emplacement: </label>
+                                <label class="control-label">Emplacement : </label>
                                 <select name="emplacement" style="border-radius: 50px">
                                     <option th:each="emp:${emplacement}" th:value="${emp.id}"
                                             th:text="${emp.emplacement}"></option>
@@ -44,21 +44,23 @@
                             </div>
 
                             <div class="form-group">
-                                <label >Date de fabrication</label>
+                                <label >Date de fabrication :</label>
                                 <input type="date" name="dateFabrication" class="form-control" th:value="${melange.dateFabrication}">
                                 <span class="text-danger" th:errors="${melange.dateFabrication}"></span>
                             </div>
 
                             <div class="form-group">
-                                <label >Date de reception</label>
+                                <label >Date de réception :</label>
                                 <input type="date" name="dateReception" class="form-control" th:value="${melange.dateReception}">
                                 <span class="text-danger" th:errors="${melange.dateReception}"></span>
                             </div>
 
                             <div class="form-group">
+                                <label >Dimension :</label>
                                 <input type="text" class="form-control" name="dimension" placeholder="Dimension" th:value="${melange.dimension}">
                             </div>
                             <div class="form-group">
+                                <label >Poids :</label>
                                 <input type="text" class="form-control" name="poids" placeholder="Poids" th:value="${melange.poids}">
                             </div>
                             <button class=" btn btn-outline-success" type="submit">Enregistrer</button>
