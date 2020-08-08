@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       layout:decorator="theme">
 <head>
     <title>Liste des références des mélanges</title>
@@ -36,11 +37,11 @@
                                         <a th:href="@{listMelange(ref_id=${v.id}, ref=${v.reference})}">Mélanges</a>
                                     </td>
                                     <td th:text="${v.melanges.size()}"></td>
-                                    <td>
+                                    <td sec:authorize="hasRole('ROLE_ADMIN')">
                                         <a th:href="@{editMelangeRef(id=${v.id})}"
                                            class="btn btn-outline-warning">Modifier</a>
                                     </td>
-                                    <td>
+                                    <td sec:authorize="hasRole('ROLE_ADMIN')">
                                         <form th:action="@{deleteMelangeRef}" method="post">
                                             <input type="hidden" name="id" th:value="${v.id}"/>
                                             <input type="hidden" name="page" th:value="${currentPage}"/>

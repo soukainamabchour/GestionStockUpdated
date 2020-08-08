@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       layout:decorator="theme">
 <head>
     <title>Liste des emplacements des mélanges</title>
@@ -33,7 +34,7 @@
                                     <td th:text="${emp.emplacement}"></td>
                                     <td th:if="${emp.etat==true}">Plein</td>
                                     <td th:if="${emp.etat==false}">Vide</td>
-                                    <td>
+                                    <td sec:authorize="hasRole('ROLE_ADMIN')">
                                          <form th:action="@{deleteMelangeEmp}" method="post">
                                              <input type="hidden" name="id" th:value="${emp.id}"/>
                                              <input type="hidden" name="page" th:value="${currentPage}"/>
