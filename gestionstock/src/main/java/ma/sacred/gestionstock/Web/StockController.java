@@ -79,9 +79,9 @@ public class StockController {
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/addMelangeRef", method = RequestMethod.POST)
     public String addMelangeRef(@Valid MelangeReference melangeRef, BindingResult br, Model model) {
-        model.addAttribute("melangeRef", melangeRef);
         if (br.hasErrors()) return "formMelangeRef";
         melangeReferenceRepository.save(melangeRef);
+        model.addAttribute("melangeRef", melangeRef);
         return "saveMelangeRef";
     }
 

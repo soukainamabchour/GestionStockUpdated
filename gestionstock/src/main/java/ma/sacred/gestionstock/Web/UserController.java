@@ -35,7 +35,7 @@ public class UserController {
     ////////---------------Afficher utilisateur------------///////////
     @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "listUsers", method = RequestMethod.GET)
-    public String listUSers(Model model,
+    public String listUsers(Model model,
                                  @RequestParam(name = "page", defaultValue = "0") int p,
                                  @RequestParam(name = "size", defaultValue = "5") int s,
                                  @RequestParam(name = "keyword", defaultValue = "") String kw) {
@@ -63,10 +63,10 @@ public class UserController {
     @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public String addUser(@Valid User user, BindingResult br, Model model) {
-        user.setActive(true);
-        model.addAttribute("user", user);
         if (br.hasErrors()) return "formUser";
         userRepository.save(user);
+        user.setActive(true);
+        model.addAttribute("user", user);
         return "redirect:/UserRole?username="+user.getUsername();
     }
 

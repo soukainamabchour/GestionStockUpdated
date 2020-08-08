@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -16,7 +18,12 @@ import java.util.Collection;
 @ToString
 public class User implements Serializable {
     @Id
+    @NotNull
+    @Size(min=4, max = 10, message = "Le nom d'utilisateur doit être entre 4 et 10 caractères")
+    @Column(unique = true)
     private String username;
+    @NotNull
+    @Size(min=5, max = 16, message = "Le mot de passe doit être entre 5 et 16 caractères ")
     private String password;
     private String nom;
     private String prenom;
