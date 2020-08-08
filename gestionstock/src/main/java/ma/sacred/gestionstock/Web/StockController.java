@@ -77,11 +77,11 @@ public class StockController {
 
     ////////------------------Enregistrer référence------------////////////
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
-    @RequestMapping(value = "/addMelangeRef", method = RequestMethod.POST)
-    public String addMelangeRef(@Valid MelangeReference melangeRef, BindingResult br, Model model) {
-        if (br.hasErrors()) return "formMelangeRef";
-        melangeReferenceRepository.save(melangeRef);
+    @PostMapping(value = "/addMelangeRef")
+    public String addMelangeRef(@Valid  MelangeReference melangeRef, BindingResult bindingResult, Model model) {
         model.addAttribute("melangeRef", melangeRef);
+        if (bindingResult.hasErrors()) return "formMelangeRef";
+        melangeReferenceRepository.save(melangeRef);
         return "saveMelangeRef";
     }
 

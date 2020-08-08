@@ -27,7 +27,10 @@
                             <div class="form-inline">
                                 <input class="form-control" type="text" name="reference" placeholder="Référence"
                                        th:value="${melangeRef.reference}">
-                                <button class="btn btn-outline-success" type="submit">Enregistrer</button>
+                                <span class="text-danger" th:errors="${melangeRef.reference}"></span>
+                               <div>
+                                   <button class="btn btn-outline-success" type="submit">Enregistrer</button>
+                               </div>
                             </div>
                         </form>
                     </div>

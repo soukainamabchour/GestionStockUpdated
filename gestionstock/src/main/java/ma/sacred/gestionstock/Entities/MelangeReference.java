@@ -20,9 +20,8 @@ public class MelangeReference implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull(message = "Veuillez Ajouter une référence")
-    @Column(unique = true)
-    @Size(min=1, message = "Veuillez Ajouter une référence")
+    @NotNull
+    @Size(min=5,max=20, message = "error")
     private String reference;
     @OneToMany(mappedBy = "reference")
     private Collection<Melange> melanges;
