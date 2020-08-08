@@ -33,6 +33,7 @@
                             </div>
                             <div class="form-group">
                                 <input type="text" class="form-control" name="lot" placeholder="N°Lot" th:value="${melange.lot}">
+                                <span class="text-danger" th:errors="${melange.lot}"></span>
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Emplacement: </label>
@@ -45,11 +46,13 @@
                             <div class="form-group">
                                 <label >Date de fabrication</label>
                                 <input type="date" name="dateFabrication" class="form-control" th:value="${melange.dateFabrication}">
+                                <span class="text-danger" th:errors="${melange.dateFabrication}"></span>
                             </div>
 
                             <div class="form-group">
                                 <label >Date de reception</label>
                                 <input type="date" name="dateReception" class="form-control" th:value="${melange.dateReception}">
+                                <span class="text-danger" th:errors="${melange.dateReception}"></span>
                             </div>
 
                             <div class="form-group">

@@ -128,8 +128,7 @@ public class StockController {
     public String useMelanges(Model model,
                              @RequestParam(name = "page", defaultValue = "0") int p,
                              @RequestParam(name = "size", defaultValue = "5") int s,
-                             @RequestParam(name = "id")Long id,
-                             @RequestParam(name = "keyword", defaultValue ="") String kw){
+                             @RequestParam(name = "id")Long id){
         Melange melange=melangeRepository.findById(id).get();
         Long emp=melange.getEmplacement().getId();
         MelangeEmplacement old_emp=melangeEmplacementRepository.findById(emp).get();
@@ -137,7 +136,7 @@ public class StockController {
         melange.setEmplacement(null);
         melange.setDateUtilisation(LocalDateTime.now());
         melangeRepository.save(melange);
-        return "redirect:/listerMelanges?page=" + p + "&size=" + s + "&keyword="+kw+"";
+        return "redirect:/listerMelanges?page=" + p + "&size=" + s +"";
     }
 
     /////////////////////////////////-----Ajouter----------////////////////////////////////
@@ -161,6 +160,7 @@ public class StockController {
     public String addMelanges(@Valid Melange melange, BindingResult br, Model model,
                              @RequestParam(name = "page", defaultValue = "0") int p,
                              @RequestParam(name = "size", defaultValue = "5") int s) {
+        if(br.hasErrors()) return "formMelanges";
         melange.getEmplacement().setEtat(true);
         melange.setJours(90-ChronoUnit.DAYS.between(melange.getDateFabrication(), LocalDate.now()));
         model.addAttribute("melange", melange);
@@ -217,6 +217,7 @@ public class StockController {
                              @RequestParam(name = "size", defaultValue = "5") int s,
                              @RequestParam(name="ref_id")Long id,
                              @RequestParam(name = "ref")String ref) {
+        if(br.hasErrors()) return "formMelange";
         MelangeReference reference = melangeReferenceRepository.findById(id).get();
         melange.getEmplacement().setEtat(true);
         melange.setJours(90-ChronoUnit.DAYS.between(melange.getDateFabrication(), LocalDate.now()));
