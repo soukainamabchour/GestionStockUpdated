@@ -32,6 +32,8 @@ public class UserController {
     @Autowired
     RoleRepository roleRepository;
 
+    @RequestMapping(value = "/" , method = RequestMethod.GET)
+    public String app(){return "app";}
 
     /////////////////----------------------Utilisateur-----------------------////////////////
     ////////---------------Afficher utilisateur------------///////////

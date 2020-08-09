@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="webjars/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Exo+2&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-sm bg-light navbar-light">
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="#">
+            <img th:src="@{'/images/sacred.jpg'}" style="width:60px;">
+        </a>
+        <ul class="navbar-nav ml-auto">
+            <span sec:authorize="isAuthenticated()">
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-dark" href="#" id="navbardrop" data-toggle="dropdown">
+                    <img th:src="@{'/images/person.svg'}">
+                    <span sec:authentication="name"></span>
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item"
+                       sec:authorize="hasRole('ROLE_ADMIN')"
+                       th:href="@{listUsers}">Utilisateurs</a>
+                    <a class="dropdown-item" th:href="@{logout}">Se déconnecter</a>
+                </div>
+                </li>
+            </span>
+            <span sec:authorize="!isAuthenticated()">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{login}">Se connecter</a>
+            </li>
+        </span>
+        </ul>
+    </nav>
+</div>
+<div class="mx-4">
+    <section layout:fragment="content">
+    </section>
+</div>
+
+</body>
+</html>
