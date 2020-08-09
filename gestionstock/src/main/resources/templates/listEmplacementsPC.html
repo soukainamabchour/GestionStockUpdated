@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorator="theme">
+<head>
+    <title>Liste des emplacements des produits chimiques</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container justify-content-center mt-3 container-fluid">
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <h5 class="card-header">Emplacements Produits Chimiques</h5>
+                    <div class="card-body">
+                        <form method="get" th:action="@{listEmplacementsPC}">
+                            <div class="form-inline">
+                                <input class="form-control" type="text" name="keyword" id="keyword"
+                                       placeholder="Chercher un emplacement" th:value="${keyword}">
+                                <button class="btn btn-outline-primary" type="submit">Chercher</button>
+                            </div>
+                        </form>
+                        <div class="container mt-3">
+                            <table class="table table-hover" id="table">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Emplacement</th>
+                                    <th>Etat</th>
+                                </tr>
+                                <tr th:each="emp:${emplacements}">
+                                    <td th:text="${emp.id}"></td>
+                                    <td th:text="${emp.emplacement}"></td>
+                                    <td th:if="${emp.etat==true}">Plein</td>
+                                    <td th:if="${emp.etat==false}">Vide</td>
+                                    <td sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <form th:action="@{deletePCEmp}" method="post">
+                                            <input type="hidden" name="id" th:value="${emp.id}"/>
+                                            <input type="hidden" name="page" th:value="${currentPage}"/>
+                                            <input type="hidden" name="size" th:value="${5}"/>
+                                            <button th:if="${emp.etat==false}" type="submit"
+                                                    class="btn btn-outline-danger"
+                                                    onclick="return confirm('êtes-vous sûr de vouloir supprimer?');">
+                                                Supprimer
+                                            </button>
+                                            <button disabled th:if="${emp.etat==true}" type="submit"
+                                                    class="btn btn-outline-danger disabled">
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                            <a th:href="@{formPCEmp}"
+                               class="btn btn-block btn-outline-success mb-3">Ajouter un Emplacement</a>
+                        </div>
+                        <div class="card-footer">
+                            <div class="container mt-3">
+                                <ul class="nav nav-pills">
+                                    <li th:each="page,status:${pages}">
+                                        <a
+                                                th:class="${status.index==currentPage?'btn btn-outline-primary':'btn'}"
+                                                th:href="@{listEmplacementsPC(page=${status.index}, keyword=${keyword})}"
+                                                th:text="${status.index+1}"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

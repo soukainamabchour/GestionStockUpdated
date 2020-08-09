@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="theme">
+<head>
+    <title>Ajouter un produit chimique</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container justify-content-center mt-3 container-fluid">
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="card">
+                    <h5 class="card-header">Ajouter un produit chimique</h5>
+                    <div class="card-body">
+                        <form method="post" th:action="@{addPC(ref_id=${ref_id}, ref=${ref})}">
+                            <div>
+                                <label class="control-label">ID : </label>
+                                <label class="control-label" th:if="${pc.id!=null}"
+                                       th:text="${pc.id}" name="id"></label>
+                                <label class="control-label" th:if="${pc.id==null}">Généré
+                                    automatiquement</label>
+                                <input type="hidden" name="id" class="form-control" th:value="${pc.id}">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Référence : </label>
+                                <label class="control-label" th:text="${pc.getReference().getReference()}" th:value="${pc.getReference().getReference()}" name="reference"></label>
+                                <a th:href="@{formPCRef}"
+                                   class="btn btn-outline-primary btn-sm">Ajouter une nouvelle référence</a>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Nom : </label>
+                                <input type="text" class="form-control" name="nom" placeholder="Nom" th:value="${pc.nom}">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Emplacement : </label>
+                                <select name="emplacement" style="border-radius: 50px">
+                                    <option th:each="emp:${emplacement}" th:value="${emp.id}"
+                                            th:text="${emp.emplacement}"></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label >Date de fabrication :</label>
+                                <input type="date" name="dateFabrication" class="form-control" th:value="${pc.dateFabrication}">
+                                <span class="text-danger" th:errors="${pc.dateFabrication}"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label >Date de réception :</label>
+                                <input type="date" name="dateReception" class="form-control" th:value="${pc.dateReception}">
+                                <span class="text-danger" th:errors="${pc.dateReception}"></span>
+                            </div>
+                            <button class=" btn btn-outline-success" type="submit">Enregistrer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

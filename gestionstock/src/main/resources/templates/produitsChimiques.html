@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="theme">
+<head>
+    <title>Produits Chimiques</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid mt-3">
+        <table class="table table-hover">
+            <tr>
+                <td>
+                    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a class="text-white" th:href="@{pcRef}">Références</a>
+                            </h5>
+                        </div>
+                </td>
+                <td>
+                    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a class="text-white" th:href="@{listerPCs}">Produits Chimiques</a>
+                            </h5>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a class="text-white" th:href="@{listEmplacementsPC}">Emplacements</a>
+                            </h5>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
