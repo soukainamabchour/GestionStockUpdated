@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="theme">
+<head>
+    <title>Confirmation</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center container-fluid">
+            <div class="col-md-6">
+                <div class="card mt-4">
+
+                    <div class="card-body">
+                        <h3 class="card-title text-muted">Enregistré!</h3>
+                        <hr>
+                        <div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">ID : </label>
+                            <label class="col-form-label" th:text="${composant.id}"></label>
+                        </div>
+                        <div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">Référence : </label>
+                            <label class="col-form-label" th:text="${composant.getReference().getReference()}"></label>
+                        </div>
+                        <div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">Nom : </label>
+                            <label class="col-form-label" th:text="${composant.getNom()}"></label>
+                        </div>
+                        <div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">Emplacement : </label>
+                            <label class="col-form-label" th:text="${composant.emplacement.getEmplacement()}"></label>
+                        </div>
+                        <div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">Date de fabrication : </label>
+                            <label class="col-form-label" th:text="${composant.getDateFabrication()}"></label>
+                        </div>
+                        <div class="form-group row ml-4">
+                            <label class="col-form-label mr-3 font-weight-bold">Date de récéption : </label>
+                            <label class="col-form-label" th:text="${composant.getDateReception()}"></label>
+                        </div>
+                    </div>
+                </div>
+                <a th:href="@{listerComposants}"
+                   class="btn btn-block btn-outline-primary mb-3">Liste des inserts</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

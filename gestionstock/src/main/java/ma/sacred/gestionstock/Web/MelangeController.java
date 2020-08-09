@@ -24,7 +24,7 @@ import java.util.List;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
-public class StockController {
+public class MelangeController {
 
     @Autowired
     MelangeReferenceRepository melangeReferenceRepository;
@@ -328,4 +328,5 @@ public class StockController {
        melangeEmplacementRepository.deleteById(id);
         return "redirect:/listEmplacements?page=" + page + "&size=" + size + "";
     }
+
 }

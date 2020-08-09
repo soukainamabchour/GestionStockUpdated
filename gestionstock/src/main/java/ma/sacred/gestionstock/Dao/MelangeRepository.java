@@ -9,7 +9,7 @@ import org.springframework.data.domain.Sort.Order;
 import java.util.List;
 
 public interface MelangeRepository extends JpaRepository<Melange, Long> {
-   // public Page<Melange> findByReference_IdAndLotContains();
+
     public Melange findByIdAndReference_Id(Long id, Long ref_id);
     public Page<Melange> findByReference_IdAndLotContainsOrderByJoursAsc(Long id, String keyword, Pageable page);
     public Page<Melange> findAllByLotContainsOrderByJoursAsc(String kw, Pageable pageable);
