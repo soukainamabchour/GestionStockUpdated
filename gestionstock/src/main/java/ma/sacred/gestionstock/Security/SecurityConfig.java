@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         System.out.println("////////////////////////////////////////////////////////////////////");
 
 
-        auth.jdbcAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance())
+        auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .usersByUsernameQuery("select username as principal, password as credentials, true from user where username = ?")
                 .authoritiesByUsernameQuery("select user_username as principal, roles_role as role from users_roles where user_username = ?")

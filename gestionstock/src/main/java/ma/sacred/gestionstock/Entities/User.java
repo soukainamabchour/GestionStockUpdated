@@ -23,6 +23,7 @@ public class User implements Serializable {
     @Column(unique = true)
     private String username;
     @NotNull
+    @Size(min=5,  message = "Le mot de passe doit être entre 5 et 16 caractères ")
     private String password;
     private String nom;
     private String prenom;

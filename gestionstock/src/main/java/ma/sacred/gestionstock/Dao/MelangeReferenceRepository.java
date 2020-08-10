@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface MelangeReferenceRepository extends JpaRepository<MelangeReference, Long> {
     public Page<MelangeReference> findByReferenceContains(String keyword, Pageable pageable);
+    public MelangeReference findByReference(String keyword);
 }
