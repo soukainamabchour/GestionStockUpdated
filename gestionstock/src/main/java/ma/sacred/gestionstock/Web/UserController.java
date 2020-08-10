@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,7 @@ import java.util.List;
 
 @Controller
 @Secured(value = {"ROLE_ADMIN"})
+@Transactional
 public class UserController {
 
     @Autowired
@@ -40,9 +43,9 @@ public class UserController {
     @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "listUsers", method = RequestMethod.GET)
     public String listUsers(Model model,
-                                 @RequestParam(name = "page", defaultValue = "0") int p,
-                                 @RequestParam(name = "size", defaultValue = "5") int s,
-                                 @RequestParam(name = "keyword", defaultValue = "") String kw) {
+                            @RequestParam(name = "page", defaultValue = "0") int p,
+                            @RequestParam(name = "size", defaultValue = "5") int s,
+                            @RequestParam(name = "keyword", defaultValue = "") String kw) {
         Page<User> users=userRepository.findByUsernameContains(kw, PageRequest.of(p,s));
         model.addAttribute("users", users.getContent());
         model.addAttribute("pages", new int[users.getTotalPages()]);
@@ -68,10 +71,12 @@ public class UserController {
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public String addUser(@Valid User user, BindingResult br, Model model) {
         if (br.hasErrors()) return "formUser";
-        userRepository.save(user);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(true);
+        userRepository.save(user);
         model.addAttribute("user", user);
-        return "redirect:/UserRole?username="+user.getUsername();
+        return "redirect:/UserRole?username=" + user.getUsername();
     }
 
     @Secured(value = {"ROLE_ADMIN"})

@@ -19,11 +19,10 @@ import java.util.Collection;
 public class User implements Serializable {
     @Id
     @NotNull
-    @Size(min=4, max = 10, message = "Le nom d'utilisateur doit être entre 4 et 10 caractères")
+    @Size(min=1,message = "Le nom d'utilisateur doit être entre 4 et 10 caractères")
     @Column(unique = true)
     private String username;
     @NotNull
-    @Size(min=5, max = 16, message = "Le mot de passe doit être entre 5 et 16 caractères ")
     private String password;
     private String nom;
     private String prenom;

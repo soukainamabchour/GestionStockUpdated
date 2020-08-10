@@ -24,12 +24,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void globalConfig(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder passwordEncoder = passwordEncoder();
+        System.out.println("////////////////////////////////////////////////////////////////////");
         System.out.println(passwordEncoder.encode("1234"));
+        System.out.println("////////////////////////////////////////////////////////////////////");
 
-      /*  auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance()).withUser("admin").password("123").roles("ADMIN", "USER");
-        auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance()).withUser("user1").password("123").roles("USER");
-        auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance()).withUser("user2").password("123").roles("USER");
-        auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance()).withUser("user3").password("123").roles("USER");*/
 
         auth.jdbcAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance())
                 .dataSource(dataSource)
