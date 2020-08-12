@@ -10,4 +10,5 @@ public interface ComposantRepository extends JpaRepository<Composant, Long> {
     public Composant findByIdAndReference_Id(Long id, Long ref_id);
     public Page<Composant> findByReference_IdAndNomContainsOrderByJoursAsc(Long id, String keyword, Pageable page);
     public Page<Composant> findAllByNomContainsOrderByJoursAsc(String kw, Pageable pageable);
+    public Composant findByNom(String nom);
 }

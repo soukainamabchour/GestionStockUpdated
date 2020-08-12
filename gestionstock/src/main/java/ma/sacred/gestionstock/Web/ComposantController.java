@@ -66,10 +66,14 @@ public class ComposantController {
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @PostMapping(value = "/addComposantRef")
     public String addComposantRef(@Valid  ComposantReference composantRef, BindingResult bindingResult, Model model) {
-        model.addAttribute("composantRef", composantRef);
-        if (bindingResult.hasErrors()) return "formComposantRef";
-        composantReferenceRepository.save(composantRef);
-        return "saveComposantRef";
+        ComposantReference reference=composantReferenceRepository.findByReference(composantRef.getReference());
+        if(reference==null) {
+            model.addAttribute("composantRef", composantRef);
+            if (bindingResult.hasErrors()) return "formComposantRef";
+            composantReferenceRepository.save(composantRef);
+            return "saveComposantRef";
+        }
+        return "formComposantRef";
     }
 
     ////////------------------Modifier référence------------////////////
@@ -147,12 +151,16 @@ public class ComposantController {
     public String addComposants(@Valid Composant composant, BindingResult br, Model model,
                               @RequestParam(name = "page", defaultValue = "0") int p,
                               @RequestParam(name = "size", defaultValue = "5") int s) {
-        if(br.hasErrors()) return "formComposants";
-        composant.getEmplacement().setEtat(true);
-        composant.setJours(90-ChronoUnit.DAYS.between(composant.getDateFabrication(), LocalDate.now()));
-        model.addAttribute("composant", composant);
-        composantRepository.save(composant);
-        return "saveComposants";
+        Composant composant1=composantRepository.findByNom(composant.getNom());
+        if(composant1==null) {
+            if (br.hasErrors()) return "formComposants";
+            composant.getEmplacement().setEtat(true);
+            composant.setJours(90 - ChronoUnit.DAYS.between(composant.getDateFabrication(), LocalDate.now()));
+            model.addAttribute("composant", composant);
+            composantRepository.save(composant);
+            return "saveComposants";
+        }
+        return "formComposants";
     }
 
     /////////////////////////////////-----Lister  composants par ref----------////////////////////////////////
@@ -204,16 +212,20 @@ public class ComposantController {
                              @RequestParam(name = "size", defaultValue = "5") int s,
                              @RequestParam(name="ref_id")Long id,
                              @RequestParam(name = "ref")String ref) {
-        if(br.hasErrors()) return "formComposant";
-        ComposantReference reference = composantReferenceRepository.findById(id).get();
-        composant.getEmplacement().setEtat(true);
-        composant.setJours(90-ChronoUnit.DAYS.between(composant.getDateFabrication(), LocalDate.now()));
-        model.addAttribute("composant", composant);
-        model.addAttribute("ref_id", id);
-        model.addAttribute("ref", ref);
-        composant.setReference(reference);
-        composantRepository.save(composant);
-        return "saveComposant";
+        Composant composant1=composantRepository.findByNom(composant.getNom());
+        if(composant1==null) {
+            if (br.hasErrors()) return "formComposant";
+            ComposantReference reference = composantReferenceRepository.findById(id).get();
+            composant.getEmplacement().setEtat(true);
+            composant.setJours(90 - ChronoUnit.DAYS.between(composant.getDateFabrication(), LocalDate.now()));
+            model.addAttribute("composant", composant);
+            model.addAttribute("ref_id", id);
+            model.addAttribute("ref", ref);
+            composant.setReference(reference);
+            composantRepository.save(composant);
+            return "saveComposant";
+        }
+        return "formComposant";
     }
 
     ////////------------------Utiliser mélange------------////////////
@@ -303,10 +315,14 @@ public class ComposantController {
     @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/addComposantEmp", method = RequestMethod.POST)
     public String addComposantEmp(@Valid ComposantEmplacement composantEmp, BindingResult br, Model model) {
-        model.addAttribute("emplacement", composantEmp);
-        if (br.hasErrors()) return "formComposantEmp";
-        composantEmplacementRepository.save(composantEmp);
-        return "saveComposantEmp";
+        ComposantEmplacement emplacement=composantEmplacementRepository.findByEmplacement(composantEmp.getEmplacement());
+        if(emplacement==null) {
+            model.addAttribute("emplacement", composantEmp);
+            if (br.hasErrors()) return "formComposantEmp";
+            composantEmplacementRepository.save(composantEmp);
+            return "saveComposantEmp";
+        }
+        return "formComposantEmp";
     }
     ////////------------------Supprimer emplacement------------////////////
     @Secured(value = {"ROLE_ADMIN"})

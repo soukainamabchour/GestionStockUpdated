@@ -79,18 +79,16 @@ public class MelangeController {
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @PostMapping(value = "/addMelangeRef")
     public String addMelangeRef(@Valid  MelangeReference melangeRef, BindingResult bindingResult, Model model) {
-        String ref=melangeRef.getReference();
-        MelangeReference reference=melangeReferenceRepository.findByReference(ref);
+        MelangeReference reference=melangeReferenceRepository.findByReference(melangeRef.getReference());
         if(reference==null) {
             model.addAttribute("melangeRef", melangeRef);
-//        model.addAttribute("message", message);
             if (bindingResult.hasErrors()) return "formMelangeRef";
             melangeReferenceRepository.save(melangeRef);
             return "saveMelangeRef";
         }
         else {
             model.addAttribute("message","lot existe");
-            return "formMelangeRef";
+            return "existe";
         }
     }
 
@@ -230,16 +228,20 @@ public class MelangeController {
                              @RequestParam(name = "size", defaultValue = "5") int s,
                              @RequestParam(name="ref_id")Long id,
                              @RequestParam(name = "ref")String ref) {
-        if(br.hasErrors()) return "formMelange";
-        MelangeReference reference = melangeReferenceRepository.findById(id).get();
-        melange.getEmplacement().setEtat(true);
-        melange.setJours(90-ChronoUnit.DAYS.between(melange.getDateFabrication(), LocalDate.now()));
-        model.addAttribute("melange", melange);
-        model.addAttribute("ref_id", id);
-        model.addAttribute("ref", ref);
-        melange.setReference(reference);
-        melangeRepository.save(melange);
-        return "saveMelange";
+        Melange melange1 = melangeRepository.findByLot(melange.getLot());
+        if (melange1 == null) {
+            if (br.hasErrors()) return "formMelange";
+            MelangeReference reference = melangeReferenceRepository.findById(id).get();
+            melange.getEmplacement().setEtat(true);
+            melange.setJours(90 - ChronoUnit.DAYS.between(melange.getDateFabrication(), LocalDate.now()));
+            model.addAttribute("melange", melange);
+            model.addAttribute("ref_id", id);
+            model.addAttribute("ref", ref);
+            melange.setReference(reference);
+            melangeRepository.save(melange);
+            return "saveMelange";
+        }
+        return "formMelange";
     }
 
     ////////------------------Utiliser mélange------------////////////
@@ -329,10 +331,14 @@ public class MelangeController {
     @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/addMelangeEmp", method = RequestMethod.POST)
     public String addMelangeEmp(@Valid MelangeEmplacement melangeEmp, BindingResult br, Model model) {
-        model.addAttribute("emplacement", melangeEmp);
-        if (br.hasErrors()) return "formMelangeEmp";
-        melangeEmplacementRepository.save(melangeEmp);
-        return "saveMelangeEmp";
+        MelangeEmplacement emplacement = melangeEmplacementRepository.findByEmplacement(melangeEmp.getEmplacement());
+        if (emplacement == null) {
+            model.addAttribute("emplacement", melangeEmp);
+            if (br.hasErrors()) return "formMelangeEmp";
+            melangeEmplacementRepository.save(melangeEmp);
+            return "saveMelangeEmp";
+        }
+        return "formMelangeEmp";
     }
     ////////------------------Supprimer emplacement------------////////////
     @Secured(value = {"ROLE_ADMIN"})

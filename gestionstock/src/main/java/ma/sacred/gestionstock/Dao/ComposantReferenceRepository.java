@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ComposantReferenceRepository extends JpaRepository<ComposantReference, Long> {
     public Page<ComposantReference> findByReferenceContains(String keyword, Pageable pageable);
+    public ComposantReference findByReference(String ref);
 }
