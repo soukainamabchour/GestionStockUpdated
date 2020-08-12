@@ -58,10 +58,7 @@
                                         th:text="${m.getEmplacement().getEmplacement()}"></td>
                                     <td th:if="${m.getEmplacement()==null}">En cours d'utilisation</td>
                                     <td th:if="${m.getEmplacement()!=null}">Pas encore utilisé</td>
-                                    <td th:if="${m.getEmplacement()==null && m.getMachine()==null}">
-                                        AAA
-                                    </td>
-                                    <td th:if="${m.getEmplacement()==null && m.getMachine()!=null}"
+                                    <td th:if="${m.getEmplacement()==null}"
                                         th:text="${m.getMachine().getReference()}">
                                     </td>
                                     <td>
@@ -70,7 +67,7 @@
                                             <input type="hidden" name="id" th:value="${m.id}"/>
                                             <input type="hidden" name="page" th:value="${currentPage}"/>
                                             <input type="hidden" name="size" th:value="${5}"/>
-                                            <button disabled th:if="${m.emplacement==null}" class="btn btn-outline-info">Retirer</button>
+                                            <button th:if="${m.emplacement==null}" class="btn btn-outline-secondary">Annuler</button>
                                             <button th:if="${m.emplacement!=null}" class="btn btn-outline-info">Retirer</button>
                                         </form>
                                     </td>

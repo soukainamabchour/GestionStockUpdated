@@ -207,18 +207,6 @@ public class MelangeController {
         return "listMelange";
     }
 
-    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
-    @RequestMapping(value = "/melangeMachine", method = POST)
-    public String melangeMachine(Model model, String machine,
-                                 @RequestParam(name = "id")Long id ){
-        Melange melange=melangeRepository.findById(id).get();
-        Machine machine1=machineRepository.findByReference(machine);
-        Long ref_id=melange.getReference().getId();
-        String ref=melange.getReference().getReference();
-        melange.setMachine(machine1);
-        melangeRepository.save(melange);
-        return "redirect:/listMelange?ref_id="+ref_id+"&ref="+ref+"";
-    }
     ////////------------------Ajouter mélange------------////////////
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/formMelange", method = RequestMethod.GET)
@@ -281,6 +269,21 @@ public class MelangeController {
         melange.setDateUtilisation(LocalDateTime.now());
         melangeRepository.save(melange);
         return "useMelange";
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @RequestMapping(value = "/melangeMachine", method = POST)
+    public String melangeMachine(Model model, String machine,
+                                 @RequestParam(name = "id")Long id ){
+        Melange melange=melangeRepository.findById(id).get();
+        Machine machine1=machineRepository.findByReference(machine);
+        Long ref_id=melange.getReference().getId();
+        String ref=melange.getReference().getReference();
+        melange.setMachine(machine1);
+        machine1.setEtat(true);
+        machineRepository.save(machine1);
+        melangeRepository.save(melange);
+        return "redirect:/listMelange?ref_id="+ref_id+"&ref="+ref+"";
     }
 
     ////////------------------Modifier mélange------------////////////
