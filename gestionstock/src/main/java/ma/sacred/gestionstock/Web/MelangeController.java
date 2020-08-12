@@ -1,8 +1,10 @@
 package ma.sacred.gestionstock.Web;
 
+import ma.sacred.gestionstock.Dao.MachineRepository;
 import ma.sacred.gestionstock.Dao.MelangeEmplacementRepository;
 import ma.sacred.gestionstock.Dao.MelangeReferenceRepository;
 import ma.sacred.gestionstock.Dao.MelangeRepository;
+import ma.sacred.gestionstock.Entities.Machine;
 import ma.sacred.gestionstock.Entities.Melange;
 import ma.sacred.gestionstock.Entities.MelangeEmplacement;
 import ma.sacred.gestionstock.Entities.MelangeReference;
@@ -22,6 +24,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 public class MelangeController {
@@ -34,6 +37,9 @@ public class MelangeController {
 
     @Autowired
     MelangeEmplacementRepository melangeEmplacementRepository;
+
+    @Autowired
+    MachineRepository machineRepository;
 
     @RequestMapping(value = "/homepage", method = RequestMethod.GET)
     public String homepage() {
@@ -187,7 +193,7 @@ public class MelangeController {
                               @RequestParam(name = "size", defaultValue = "5") int s,
                               @RequestParam(name = "ref_id") Long ref_id,
                               @RequestParam(name = "ref")String ref,
-                              @RequestParam(name = "keyword", defaultValue ="") String kw
+                              @RequestParam(name = "keyword", defaultValue ="")String kw
     ) {
         Page<Melange> melange = melangeRepository.findByReference_IdAndLotContainsOrderByJoursAsc(ref_id,kw, PageRequest.of(p, s));
         model.addAttribute("result", melange.getTotalElements() );
@@ -201,6 +207,18 @@ public class MelangeController {
         return "listMelange";
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @RequestMapping(value = "/melangeMachine", method = POST)
+    public String melangeMachine(Model model, String machine,
+                                 @RequestParam(name = "id")Long id ){
+        Melange melange=melangeRepository.findById(id).get();
+        Machine machine1=machineRepository.findByReference(machine);
+        Long ref_id=melange.getReference().getId();
+        String ref=melange.getReference().getReference();
+        melange.setMachine(machine1);
+        melangeRepository.save(melange);
+        return "redirect:/listMelange?ref_id="+ref_id+"&ref="+ref+"";
+    }
     ////////------------------Ajouter mélange------------////////////
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/formMelange", method = RequestMethod.GET)
@@ -250,18 +268,19 @@ public class MelangeController {
     public String useMelange(Model model,
                              @RequestParam(name = "page", defaultValue = "0") int p,
                              @RequestParam(name = "size", defaultValue = "5") int s,
-                             @RequestParam(name = "ref_id") Long ref_id,
-                             @RequestParam(name = "ref")String ref,
                              @RequestParam(name = "id")Long id,
                              @RequestParam(name = "keyword", defaultValue ="") String kw){
         Melange melange=melangeRepository.findById(id).get();
+        List<Machine> machine=machineRepository.findByEtatIsFalse();
+        model.addAttribute("machine", machine);
+        model.addAttribute("melange_id", id);
         Long emp=melange.getEmplacement().getId();
         MelangeEmplacement old_emp=melangeEmplacementRepository.findById(emp).get();
         old_emp.setEtat(false);
         melange.setEmplacement(null);
         melange.setDateUtilisation(LocalDateTime.now());
         melangeRepository.save(melange);
-        return "redirect:/listMelange?ref_id="+ref_id+"&ref="+ref+"&page=" + p + "&size=" + s + "&keyword="+kw+"";
+        return "useMelange";
     }
 
     ////////------------------Modifier mélange------------////////////

@@ -36,6 +36,7 @@
                                     <th>Poids</th>
                                     <th>Jours restants</th>
                                     <th>Emplacement</th>
+                                    <th>Machine</th>
                                 </tr>
                                 <tr th:each="m:${listMelange}">
                                     <!--                                    <td class="btn btn-success" th:if="${m.getJours()==0 || m.getJours()<60}" th:text="${m.id}"></td>-->
@@ -56,14 +57,19 @@
                                     <td th:if="${m.getEmplacement()!=null}"
                                         th:text="${m.getEmplacement().getEmplacement()}"></td>
                                     <td th:if="${m.getEmplacement()==null}">En cours d'utilisation</td>
+                                    <td th:if="${m.getEmplacement()!=null}">Pas encore utilisé</td>
+                                    <td th:if="${m.getEmplacement()==null && m.getMachine()==null}">
+                                        AAA
+                                    </td>
+                                    <td th:if="${m.getEmplacement()==null && m.getMachine()!=null}"
+                                        th:text="${m.getMachine().getReference()}">
+                                    </td>
                                     <td>
-                                        <form th:action="@{useMelange(id=${m.getId()},ref_id=${ref_id}, ref=${ref})}"
+                                        <form th:action="@{useMelange(id=${m.getId()})}"
                                               method="post">
                                             <input type="hidden" name="id" th:value="${m.id}"/>
                                             <input type="hidden" name="page" th:value="${currentPage}"/>
                                             <input type="hidden" name="size" th:value="${5}"/>
-                                            <input type="hidden" name="ref_id" th:value="${ref_id}">
-                                            <input type="hidden" th:value="${ref}" name="ref">
                                             <button disabled th:if="${m.emplacement==null}" class="btn btn-outline-info">Retirer</button>
                                             <button th:if="${m.emplacement!=null}" class="btn btn-outline-info">Retirer</button>
                                         </form>
