@@ -13,7 +13,7 @@
                 <div class="card">
                     <h5 class="card-header">Ajouter une machine</h5>
                     <div class="card-body">
-                        <form method="post" th:action="@{melangeMachine(id=${melange.id})}">
+                        <form method="post" th:action="@{melangeMachines(id=${melange.id})}">
                             <div class="form-group">
                                 <label>Machine : </label>
                                 <input type="text" name="machine" th:value="${melange.machine}">

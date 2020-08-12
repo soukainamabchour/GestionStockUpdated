@@ -33,6 +33,7 @@
                                     <th>Poids</th>
                                     <th>Jours restants</th>
                                     <th>Emplacement</th>
+                                    <th>Machine</th>
                                 </tr>
                                 <tr th:each="m:${listMelange}">
                                     <td th:text="${m.id}"></td>
@@ -51,14 +52,17 @@
                                     <td th:if="${m.getEmplacement()!=null}"
                                         th:text="${m.getEmplacement().getEmplacement()}"></td>
                                     <td th:if="${m.getEmplacement()==null}">En cours d'utilisation</td>
+                                    <td th:if="${m.getEmplacement()!=null}">Pas encore utilisé</td>
+                                    <td th:if="${m.getEmplacement()==null}"
+                                        th:text="${m.getMachine()}">
                                     <td>
                                         <form th:action="@{useMelanges(id=${m.id})}"
                                               method="post">
                                             <input type="hidden" name="id" th:value="${m.id}"/>
                                             <input type="hidden" name="page" th:value="${currentPage}"/>
                                             <input type="hidden" name="size" th:value="${5}"/>
-                                            <button disabled th:if="${m.getEmplacement()==null}" class="btn btn-outline-info">Retirer</button>
-                                            <button th:if="${m.getEmplacement()!=null}" class="btn btn-outline-info">Retirer</button>
+                                            <button disabled th:if="${m.emplacement==null}" class="btn btn-outline-secondary">Retirer</button>
+                                            <button th:if="${m.emplacement!=null}" class="btn btn-outline-info">Retirer</button>
                                         </form>
                                     </td>
                                 </tr>

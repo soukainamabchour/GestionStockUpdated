@@ -14,4 +14,5 @@ public interface MelangeRepository extends JpaRepository<Melange, Long> {
     public Page<Melange> findByReference_IdAndLotContainsOrderByJoursAsc(Long id, String keyword, Pageable page);
     public Page<Melange> findAllByLotContainsOrderByJoursAsc(String kw, Pageable pageable);
     public Melange findByLot(String lot);
+    public Melange findByLotAndMachine(String lot, String machine);
 }

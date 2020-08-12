@@ -59,7 +59,7 @@
                                     <td th:if="${m.getEmplacement()==null}">En cours d'utilisation</td>
                                     <td th:if="${m.getEmplacement()!=null}">Pas encore utilisé</td>
                                     <td th:if="${m.getEmplacement()==null}"
-                                        th:text="${m.getMachine().getReference()}">
+                                        th:text="${m.getMachine()}">
                                     </td>
                                     <td>
                                         <form th:action="@{useMelange(id=${m.getId()})}"
@@ -72,10 +72,19 @@
                                         </form>
                                     </td>
 
-                                    <td sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <td th:if="${m.getEmplacement()!=null}"
+                                        sec:authorize="hasRole('ROLE_ADMIN')">
                                         <a th:href="@{editMelange(id=${m.getId()}, ref_id=${ref_id}, ref=${ref})}"
                                            class="btn btn-outline-warning">Modifier</a>
                                     </td>
+
+                                    <td th:if="${m.getEmplacement()==null}"
+                                        sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <a th:href="@{editMelangeMachine(id=${m.getId()}, ref_id=${ref_id}, ref=${ref}, machine=${m.getMachine()})}"
+                                           class="btn btn-outline-warning">Modifier</a>
+                                    </td>
+
+
                                     <td sec:authorize="hasRole('ROLE_ADMIN')">
                                         <form th:action="@{deleteMelange(ref_id=${ref_id}, ref=${ref})}" method="post">
                                             <input type="hidden" name="id" th:value="${m.id}"/>

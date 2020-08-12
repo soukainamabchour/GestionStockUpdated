@@ -36,12 +36,20 @@
                                 <input type="text" class="form-control" name="lot" placeholder="N°Lot" th:value="${melange.lot}">
                                 <span class="text-danger" th:errors="${melange.lot}"></span>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group"
+                                 th:if="${emplacement!=null}">
                                 <label class="control-label">Emplacement : </label>
                                 <select name="emplacement" style="border-radius: 50px">
                                     <option th:each="emp:${emplacement}" th:value="${emp.id}"
                                             th:text="${emp.emplacement}"></option>
                                 </select>
+                            </div>
+
+                            <div class="form-group"
+                                 th:if="${emplacement==null}">
+                                <label>Machine :</label>
+                                <input type="text" class="form-control" name="machine" placeholder="Machine"
+                                       th:value="${melange.machine}">
                             </div>
 
                             <div class="form-group">

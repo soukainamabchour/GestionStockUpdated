@@ -27,7 +27,8 @@
                             <label class="col-form-label mr-3 font-weight-bold">N°Lot : </label>
                             <label class="col-form-label" th:text="${melange.getLot()}"></label>
                         </div>
-                        <div class="form-group row ml-4">
+                        <div class="form-group row ml-4"
+                             th:if="${melange.emplacement!=null}">
                             <label class="col-form-label mr-3 font-weight-bold">Emplacement : </label>
                             <label class="col-form-label" th:text="${melange.emplacement.getEmplacement()}"></label>
                         </div>
