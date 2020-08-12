@@ -67,7 +67,7 @@
                                             <input type="hidden" name="id" th:value="${m.id}"/>
                                             <input type="hidden" name="page" th:value="${currentPage}"/>
                                             <input type="hidden" name="size" th:value="${5}"/>
-                                            <button th:if="${m.emplacement==null}" class="btn btn-outline-secondary">Annuler</button>
+                                            <button disabled th:if="${m.emplacement==null}" class="btn btn-outline-secondary">Retirer</button>
                                             <button th:if="${m.emplacement!=null}" class="btn btn-outline-info">Retirer</button>
                                         </form>
                                     </td>

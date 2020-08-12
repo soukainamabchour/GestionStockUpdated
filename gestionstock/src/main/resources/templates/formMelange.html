@@ -24,13 +24,15 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Référence : </label>
-                                <label class="control-label" th:text="${ref}" th:value="${ref}" name="reference"></label>
+                                <label class="control-label" th:text="${ref}" th:value="${ref}"
+                                       name="reference"></label>
                                 <a th:href="@{formMelangeRef}"
                                    class="btn btn-outline-primary btn-sm">Ajouter une nouvelle référence</a>
                             </div>
                             <div class="form-group">
                                 <label class="control-label">N°Lot : </label>
-                                <input type="text" class="form-control" name="lot" placeholder="N°Lot" th:value="${melange.lot}">
+                                <input type="text" class="form-control" name="lot" placeholder="N°Lot"
+                                       th:value="${melange.lot}">
                                 <span class="text-danger" th:errors="${melange.lot}"></span>
                             </div>
 
@@ -43,24 +45,28 @@
                             </div>
 
                             <div class="form-group">
-                                <label >Date de fabrication :</label>
-                                <input type="date" name="dateFabrication" class="form-control" th:value="${melange.dateFabrication}">
+                                <label>Date de fabrication :</label>
+                                <input type="date" name="dateFabrication" class="form-control"
+                                       th:value="${melange.dateFabrication}">
                                 <span class="text-danger" th:errors="${melange.dateFabrication}"></span>
                             </div>
 
                             <div class="form-group">
-                                <label >Date de réception :</label>
-                                <input type="date" name="dateReception" class="form-control" th:value="${melange.dateReception}">
+                                <label>Date de réception :</label>
+                                <input type="date" name="dateReception" class="form-control"
+                                       th:value="${melange.dateReception}">
                                 <span class="text-danger" th:errors="${melange.dateReception}"></span>
                             </div>
 
                             <div class="form-group">
-                                <label >Dimension :</label>
-                                <input type="text" class="form-control" name="dimension" placeholder="Dimension" th:value="${melange.dimension}">
+                                <label>Dimension :</label>
+                                <input type="text" class="form-control" name="dimension" placeholder="Dimension"
+                                       th:value="${melange.dimension}">
                             </div>
                             <div class="form-group">
-                                <label >Poids :</label>
-                                <input type="text" class="form-control" name="poids" placeholder="Poids" th:value="${melange.poids}">
+                                <label>Poids :</label>
+                                <input type="text" class="form-control" name="poids" placeholder="Poids"
+                                       th:value="${melange.poids}">
                             </div>
                             <button class=" btn btn-outline-success" type="submit">Enregistrer</button>
                         </form>
