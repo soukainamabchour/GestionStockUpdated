@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PCReferenceRepository extends JpaRepository<PCReference, Long> {
     public Page<PCReference> findByReferenceContains(String keyword, Pageable pageable);
+    public PCReference findByReference(String ref);
 }

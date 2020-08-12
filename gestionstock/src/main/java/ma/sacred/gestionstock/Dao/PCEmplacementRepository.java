@@ -11,4 +11,5 @@ import java.util.List;
 public interface PCEmplacementRepository extends JpaRepository<PCEmplacement, Long> {
     public List<PCEmplacement> findByEtatIsFalse();
     public Page<PCEmplacement> findByEmplacementContainsOrderByEmplacement(String kw, Pageable pageable);
+    public PCEmplacement findByEmplacement(String emp);
 }

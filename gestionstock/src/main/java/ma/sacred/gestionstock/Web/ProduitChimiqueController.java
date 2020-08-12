@@ -65,10 +65,13 @@ public class ProduitChimiqueController {
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @PostMapping(value = "/addPCRef")
     public String addPCRef(@Valid  PCReference pcReference, BindingResult bindingResult, Model model) {
+        PCReference reference=pcReferenceRepository.findByReference(pcReference.getReference());
+        if(reference==null){
         model.addAttribute("pcRef", pcReference);
         if (bindingResult.hasErrors()) return "formPCRef";
         pcReferenceRepository.save(pcReference);
-        return "savePCRef";
+        return "savePCRef";}
+        return "formPCRef";
     }
 
     ////////------------------Modifier référence------------////////////
@@ -146,12 +149,16 @@ public class ProduitChimiqueController {
     public String addPCs(@Valid ProduitChimique produitChimique, BindingResult br, Model model,
                               @RequestParam(name = "page", defaultValue = "0") int p,
                               @RequestParam(name = "size", defaultValue = "5") int s) {
-        if(br.hasErrors()) return "formPCs";
-        produitChimique.getEmplacement().setEtat(true);
-        produitChimique.setJours(90-ChronoUnit.DAYS.between(produitChimique.getDateFabrication(), LocalDate.now()));
-        model.addAttribute("pc", produitChimique);
-        pcRepository.save(produitChimique);
-        return "savePCs";
+        ProduitChimique produitChimique1=pcRepository.findByNom(produitChimique.getNom());
+        if(produitChimique1==null) {
+            if (br.hasErrors()) return "formPCs";
+            produitChimique.getEmplacement().setEtat(true);
+            produitChimique.setJours(90 - ChronoUnit.DAYS.between(produitChimique.getDateFabrication(), LocalDate.now()));
+            model.addAttribute("pc", produitChimique);
+            pcRepository.save(produitChimique);
+            return "savePCs";
+        }
+        return "formPCs";
     }
 
     /////////////////////////////////-----Lister  pcs par ref----------////////////////////////////////
@@ -195,7 +202,7 @@ public class ProduitChimiqueController {
         return "formPC";
     }
 
-    ////////------------------Enregistrer mélange------------////////////
+    ////////------------------Enregistrer produit------------////////////
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/addPC", method = RequestMethod.POST)
     public String addPC(@Valid ProduitChimique produitChimique, BindingResult br, Model model,
@@ -203,16 +210,20 @@ public class ProduitChimiqueController {
                              @RequestParam(name = "size", defaultValue = "5") int s,
                              @RequestParam(name="ref_id")Long id,
                              @RequestParam(name = "ref")String ref) {
-        if(br.hasErrors()) return "formPC";
-        PCReference reference = pcReferenceRepository.findById(id).get();
-        produitChimique.getEmplacement().setEtat(true);
-        produitChimique.setJours(90-ChronoUnit.DAYS.between(produitChimique.getDateFabrication(), LocalDate.now()));
-        model.addAttribute("pc", produitChimique);
-        model.addAttribute("ref_id", id);
-        model.addAttribute("ref", ref);
-        produitChimique.setReference(reference);
-        pcRepository.save(produitChimique);
-        return "savePC";
+        ProduitChimique produitChimique1=pcRepository.findByNom(produitChimique.getNom());
+        if(produitChimique1==null) {
+            if (br.hasErrors()) return "formPC";
+            PCReference reference = pcReferenceRepository.findById(id).get();
+            produitChimique.getEmplacement().setEtat(true);
+            produitChimique.setJours(90 - ChronoUnit.DAYS.between(produitChimique.getDateFabrication(), LocalDate.now()));
+            model.addAttribute("pc", produitChimique);
+            model.addAttribute("ref_id", id);
+            model.addAttribute("ref", ref);
+            produitChimique.setReference(reference);
+            pcRepository.save(produitChimique);
+            return "savePC";
+        }
+        return "formPC";
     }
 
     ////////------------------Utiliser produit chimique------------////////////
@@ -302,10 +313,14 @@ public class ProduitChimiqueController {
     @Secured(value = {"ROLE_ADMIN"})
     @RequestMapping(value = "/addPCEmp", method = RequestMethod.POST)
     public String addPCEmp(@Valid PCEmplacement emplacement, BindingResult br, Model model) {
-        model.addAttribute("emplacement", emplacement);
-        if (br.hasErrors()) return "formMelangeEmp";
-        pcEmplacementRepository.save(emplacement);
-        return "savePCEmp";
+        PCEmplacement emplacement1=pcEmplacementRepository.findByEmplacement(emplacement.getEmplacement());
+        if(emplacement1==null) {
+            model.addAttribute("emplacement", emplacement);
+            if (br.hasErrors()) return "formMelangeEmp";
+            pcEmplacementRepository.save(emplacement);
+            return "savePCEmp";
+        }
+        return "formPCEmp";
     }
     ////////------------------Supprimer emplacement------------////////////
     @Secured(value = {"ROLE_ADMIN"})

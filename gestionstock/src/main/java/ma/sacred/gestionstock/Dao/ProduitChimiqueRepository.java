@@ -10,4 +10,5 @@ public interface ProduitChimiqueRepository extends JpaRepository<ProduitChimique
     public ProduitChimique findByIdAndReference_Id(Long id, Long ref_id);
     public Page<ProduitChimique> findByReference_IdAndNomContainsOrderByJoursAsc(Long id, String keyword, Pageable page);
     public Page<ProduitChimique> findAllByNomContainsOrderByJoursAsc(String kw, Pageable pageable);
+    public ProduitChimique findByNom(String nom);
 }
