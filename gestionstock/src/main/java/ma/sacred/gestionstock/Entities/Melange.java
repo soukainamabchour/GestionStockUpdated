@@ -39,5 +39,6 @@ public class Melange implements Serializable {
     private MelangeReference reference;
     @OneToOne
     private MelangeEmplacement emplacement;
-    private String machine;
+    @OneToOne
+    private Machine machine;
 }

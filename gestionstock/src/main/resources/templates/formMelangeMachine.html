@@ -13,7 +13,7 @@
                 <div class="card">
                     <h5 class="card-header">Ajouter un mélange</h5>
                     <div class="card-body">
-                        <form method="post" th:action="@{addMelange(ref_id=${ref_id}, ref=${ref})}">
+                        <form method="post" th:action="@{addMelangeMachine(ref_id=${ref_id}, ref=${ref})}">
                             <div>
                                 <label class="control-label">ID : </label>
                                 <label class="control-label" th:if="${melange.id!=null}"
@@ -37,12 +37,13 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label">Emplacement : </label>
-                                <select name="emplacement" style="border-radius: 50px">
-                                    <option th:each="emp:${emplacement}" th:value="${emp.id}"
-                                            th:text="${emp.emplacement}"></option>
+                                <label>Machine :</label>
+                                <select name="machine" style="border-radius: 50px">
+                                    <option th:each="machine:${machines}" th:value="${machine.getId()}"
+                                            th:text="${machine.reference}"></option>
                                 </select>
                             </div>
+
                             <div class="form-group">
                                 <label>Date de fabrication :</label>
                                 <input type="date" name="dateFabrication" class="form-control"

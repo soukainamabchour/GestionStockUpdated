@@ -16,7 +16,7 @@
                         <form method="post" th:action="@{melangeMachines(id=${melange.id})}">
                             <div class="form-group">
                                 <label>Machine : </label>
-                                <input type="text" name="machine" th:value="${melange.machine}">
+                                <input type="text" name="machine" th:value="${melange.machine.getReference()}">
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-outline-success">Enregistrer</button>

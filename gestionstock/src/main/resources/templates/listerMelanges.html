@@ -54,7 +54,7 @@
                                     <td th:if="${m.getEmplacement()==null}">En cours d'utilisation</td>
                                     <td th:if="${m.getEmplacement()!=null}">Pas encore utilisé</td>
                                     <td th:if="${m.getEmplacement()==null}"
-                                        th:text="${m.getMachine()}">
+                                        th:text="${m.getMachine().getReference()}">
                                     <td>
                                         <form th:action="@{useMelanges(id=${m.id})}"
                                               method="post">
