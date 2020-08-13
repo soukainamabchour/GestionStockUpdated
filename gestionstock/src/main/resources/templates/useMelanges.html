@@ -13,10 +13,17 @@
                 <div class="card">
                     <h5 class="card-header">Ajouter une machine</h5>
                     <div class="card-body">
-                        <form method="post" th:action="@{melangeMachines(id=${melange.id})}">
+                        <form method="post" th:action="@{melangeMachines}">
+                            <div class="form-group">
+                                <label>Melange : </label>
+                                <input type="text" class="form-control" th:value="${melange.getLot()}" name="lot" readonly>
+                            </div>
                             <div class="form-group">
                                 <label>Machine : </label>
-                                <input type="text" name="machine" th:value="${melange.machine.getReference()}">
+                                <select name="reference" style="border-radius: 50px">
+                                    <option th:each="reference:${machines}" th:value="${reference.getReference()}"
+                                            th:text="${reference.getReference()}"></option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-outline-success">Enregistrer</button>

@@ -16,7 +16,7 @@
                         <form method="post" th:action="@{melangeMachine}">
                             <div class="form-group">
                                 <label>Melange : </label>
-                                <input type="text" class="form-control" th:value="${melange.getLot()}" name="lot">
+                                <input type="text" class="form-control" th:value="${melange.getLot()}" name="lot" readonly>
                             </div>
                             <div class="form-group">
                                 <label>Machine : </label>

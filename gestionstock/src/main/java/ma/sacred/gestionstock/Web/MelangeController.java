@@ -147,26 +147,28 @@ public class MelangeController {
                               @RequestParam(name = "size", defaultValue = "5") int s,
                               @RequestParam(name = "id") Long id) {
         Melange melange = melangeRepository.findById(id).get();
-        melangeRepository.save(melange);
+        List<Machine> machine = machineRepository.findByEtatIsFalse();
+        model.addAttribute("machines", machine);
         model.addAttribute("melange", melange);
         return "useMelanges";
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/melangeMachines", method = POST)
-    public String melangeMachines(Model model, String machine,
-                                  @RequestParam(name = "id") Long id) {
-        Melange melange = melangeRepository.findById(id).get();
+    public String melangeMachines(Model model, String lot, String reference) {
+        Melange melange = melangeRepository.findByLot(lot);
+        Machine machine = machineRepository.findByReference(reference);
         Long emp = melange.getEmplacement().getId();
         MelangeEmplacement old_emp = melangeEmplacementRepository.findById(emp).get();
         old_emp.setEtat(false);
         melange.setEmplacement(null);
         melange.setDateUtilisation(LocalDateTime.now());
-        Long ref_id = melange.getReference().getId();
-        String ref = melange.getReference().getReference();
-        melange.setMachine(machineRepository.findByReference(machine));
+        machine.setEtat(true);
+        melange.setMachine(machine);;
+        melangeEmplacementRepository.save(old_emp);
+        machineRepository.save(machine);
         melangeRepository.save(melange);
-        return "redirect:/listerMelanges?ref_id=" + ref_id + "&ref=" + ref + "";
+        return "redirect:/listerMelanges";
     }
 
     /////////////////////////////////-----Ajouter----------////////////////////////////////
@@ -280,7 +282,7 @@ public class MelangeController {
         model.addAttribute("ref", ref);
         model.addAttribute("ref_id", ref_id);
         model.addAttribute("emplacement", emplacements);
-        return "formMelange";
+        return "formEditMelange";
     }
 
 
@@ -346,8 +348,8 @@ public class MelangeController {
 
     ////////------------------Enregistrer mélange------------////////////
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
-    @RequestMapping(value = "/addMelange", method = RequestMethod.POST)
-    public String addMelange(@Valid Melange melange, BindingResult br, Model model,
+    @RequestMapping(value = "/EditMelange", method = RequestMethod.POST)
+    public String EditMelange(@Valid Melange melange, BindingResult br, Model model,
                              @RequestParam(name = "page", defaultValue = "0") int p,
                              @RequestParam(name = "size", defaultValue = "5") int s,
                              @RequestParam(name = "ref_id") Long id,
@@ -355,6 +357,29 @@ public class MelangeController {
         Melange melange1 = melangeRepository.findByLotAndEmplacement_IdAndDateFabricationAndDateReceptionAndDimensionAndPoids
                 (melange.getLot(), melange.getEmplacement().getId(), melange.getDateFabrication(),
                         melange.getDateReception(), melange.getDimension(), melange.getPoids());
+        if(melange1==null){
+            if (br.hasErrors()) return "formMelange";
+            MelangeReference reference = melangeReferenceRepository.findById(id).get();
+            melange.getEmplacement().setEtat(true);
+            melange.setJours(90 - ChronoUnit.DAYS.between(melange.getDateFabrication(), LocalDate.now()));
+            melange.setDateUtilisation(LocalDateTime.now());
+            model.addAttribute("melange", melange);
+            model.addAttribute("ref_id", id);
+            model.addAttribute("ref", ref);
+            melange.setReference(reference);
+            melangeRepository.save(melange);
+            return "saveMelange";
+        } else return "formEditMelange";
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @RequestMapping(value = "/addMelange", method = RequestMethod.POST)
+    public String addMelange(@Valid Melange melange, BindingResult br, Model model,
+                              @RequestParam(name = "page", defaultValue = "0") int p,
+                              @RequestParam(name = "size", defaultValue = "5") int s,
+                              @RequestParam(name = "ref_id") Long id,
+                              @RequestParam(name = "ref") String ref) {
+        Melange melange1 = melangeRepository.findByLot(melange.getLot());
         if (melange1 == null) {
             if (br.hasErrors()) return "formMelange";
             MelangeReference reference = melangeReferenceRepository.findById(id).get();
@@ -367,7 +392,7 @@ public class MelangeController {
             melange.setReference(reference);
             melangeRepository.save(melange);
             return "saveMelange";
-        } else return "formMelange";
+        } else return "formEditMelange";
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
