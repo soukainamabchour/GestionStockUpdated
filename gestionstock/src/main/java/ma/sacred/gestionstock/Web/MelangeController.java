@@ -1,13 +1,7 @@
 package ma.sacred.gestionstock.Web;
 
-import ma.sacred.gestionstock.Dao.MachineRepository;
-import ma.sacred.gestionstock.Dao.MelangeEmplacementRepository;
-import ma.sacred.gestionstock.Dao.MelangeReferenceRepository;
-import ma.sacred.gestionstock.Dao.MelangeRepository;
-import ma.sacred.gestionstock.Entities.Machine;
-import ma.sacred.gestionstock.Entities.Melange;
-import ma.sacred.gestionstock.Entities.MelangeEmplacement;
-import ma.sacred.gestionstock.Entities.MelangeReference;
+import ma.sacred.gestionstock.Dao.*;
+import ma.sacred.gestionstock.Entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +37,9 @@ public class MelangeController {
     @Autowired
     MachineRepository machineRepository;
 
+    @Autowired
+    FinRepository finRepository;
+
 
     @RequestMapping(value = "/homepage", method = RequestMethod.GET)
     public String homepage() {
@@ -57,6 +54,21 @@ public class MelangeController {
     @RequestMapping(value = "/melanges", method = RequestMethod.GET)
     public String melanges() {
         return "Melanges";
+    }
+
+    @RequestMapping(value = "/entree", method = RequestMethod.GET)
+    public String entree() {
+        return "entree";
+    }
+
+    @RequestMapping(value = "/stock", method = RequestMethod.GET)
+    public String stock() {
+        return "stock";
+    }
+
+    @RequestMapping(value = "/sortie", method = RequestMethod.GET)
+    public String sortie() {
+        return "sortie";
     }
 
     /////////////////----------------------Reference Melange-----------------------////////////////
@@ -75,6 +87,37 @@ public class MelangeController {
         model.addAttribute("keyword", kw);
         return "listMelangeRef";
     }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @GetMapping(path = "/listMelangeReference")
+    public String listMelangeReference(Model model,
+                                 @RequestParam(name = "page", defaultValue = "0") int p,
+                                 @RequestParam(name = "size", defaultValue = "5") int s,
+                                 @RequestParam(name = "keyword", defaultValue = "") String kw) {
+        Page<MelangeReference> melangesref = melangeReferenceRepository.findByReferenceContains(kw, PageRequest.of(p, s));
+        model.addAttribute("melangeref", melangesref.getContent());
+        model.addAttribute("pages", new int[melangesref.getTotalPages()]);
+        model.addAttribute("currentPage", p);
+        model.addAttribute("size", s);
+        model.addAttribute("keyword", kw);
+        return "listMelangeReference";
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @GetMapping(path = "/listMelangeParReference")
+    public String listMelangeParReference(Model model,
+                                       @RequestParam(name = "page", defaultValue = "0") int p,
+                                       @RequestParam(name = "size", defaultValue = "5") int s,
+                                       @RequestParam(name = "keyword", defaultValue = "") String kw) {
+        Page<MelangeReference> melangesref = melangeReferenceRepository.findByReferenceContains(kw, PageRequest.of(p, s));
+        model.addAttribute("melangeref", melangesref.getContent());
+        model.addAttribute("pages", new int[melangesref.getTotalPages()]);
+        model.addAttribute("currentPage", p);
+        model.addAttribute("size", s);
+        model.addAttribute("keyword", kw);
+        return "listMelangeParReference";
+    }
+
 
     ////////------------------Ajouter référence------------////////////
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
@@ -121,6 +164,9 @@ public class MelangeController {
 
     /////////////////---------------------- Melange-----------------------////////////////
     /////////////////////////////////-----Lister tous les mélanges----------////////////////////////////////
+
+
+
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/listerMelanges", method = GET)
     public String listerMelanges(Model model,
@@ -138,6 +184,40 @@ public class MelangeController {
         return "listerMelanges";
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @RequestMapping(value = "/listMelanges", method = GET)
+    public String listMelanges(Model model,
+                                 @RequestParam(name = "page", defaultValue = "0") int p,
+                                 @RequestParam(name = "size", defaultValue = "5") int s,
+                                 @RequestParam(name = "keyword", defaultValue = "") String kw
+    ) {
+        Page<Melange> melanges = melangeRepository.findAllByLotContainsOrderByJoursAsc(kw, PageRequest.of(p, s));
+        model.addAttribute("result", melanges.getTotalElements());
+        model.addAttribute("listMelange", melanges.getContent());
+        model.addAttribute("pages", new int[melanges.getTotalPages()]);
+        model.addAttribute("currentPage", p);
+        model.addAttribute("size", p);
+        model.addAttribute("keyword", kw);
+        return "listMelanges";
+    }
+
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @RequestMapping(value = "/listMelangesSortie", method = GET)
+    public String listMelangesSortie(Model model,
+                               @RequestParam(name = "page", defaultValue = "0") int p,
+                               @RequestParam(name = "size", defaultValue = "5") int s,
+                               @RequestParam(name = "keyword", defaultValue = "") String kw
+    ) {
+        Page<Melange> melanges = melangeRepository.findAllByLotContainsOrderByJoursAsc(kw, PageRequest.of(p, s));
+        model.addAttribute("result", melanges.getTotalElements());
+        model.addAttribute("listMelange", melanges.getContent());
+        model.addAttribute("pages", new int[melanges.getTotalPages()]);
+        model.addAttribute("currentPage", p);
+        model.addAttribute("size", p);
+        model.addAttribute("keyword", kw);
+        return "listMelangesSortie";
+    }
 
     /////////////////////////////////-----Retirer----------////////////////////////////////
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
@@ -226,6 +306,50 @@ public class MelangeController {
         return "listMelange";
     }
 
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @RequestMapping(value = "/listMelange2", method = GET)
+    public String listMelange2(Model model,
+                              @RequestParam(name = "page", defaultValue = "0") int p,
+                              @RequestParam(name = "size", defaultValue = "5") int s,
+                              @RequestParam(name = "ref_id") Long ref_id,
+                              @RequestParam(name = "ref") String ref,
+                              @RequestParam(name = "keyword", defaultValue = "") String kw
+    ) {
+        Page<Melange> melange = melangeRepository.findByReference_IdAndLotContainsOrderByJoursAsc(ref_id, kw, PageRequest.of(p, s));
+        model.addAttribute("result", melange.getTotalElements());
+        model.addAttribute("listMelange", melange.getContent());
+        model.addAttribute("pages", new int[melange.getTotalPages()]);
+        model.addAttribute("currentPage", p);
+        model.addAttribute("size", p);
+        model.addAttribute("ref_id", ref_id);
+        model.addAttribute("ref", ref);
+        model.addAttribute("keyword", kw);
+        return "listMelange2";
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @RequestMapping(value = "/listMelangeSortie", method = GET)
+    public String listMelangeSortie(Model model,
+                              @RequestParam(name = "page", defaultValue = "0") int p,
+                              @RequestParam(name = "size", defaultValue = "5") int s,
+                              @RequestParam(name = "ref_id") Long ref_id,
+                              @RequestParam(name = "ref") String ref,
+                              @RequestParam(name = "keyword", defaultValue = "") String kw
+    ) {
+        Page<Melange> melange = melangeRepository.findByReference_IdAndLotContainsOrderByJoursAsc(ref_id, kw, PageRequest.of(p, s));
+        model.addAttribute("result", melange.getTotalElements());
+        model.addAttribute("listMelange", melange.getContent());
+        model.addAttribute("pages", new int[melange.getTotalPages()]);
+        model.addAttribute("currentPage", p);
+        model.addAttribute("size", p);
+        model.addAttribute("ref_id", ref_id);
+        model.addAttribute("ref", ref);
+        model.addAttribute("keyword", kw);
+        return "listMelangeSortie";
+    }
+
+
     ////////------------------Utiliser mélange------------////////////
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @RequestMapping(value = "/useMelange", method = RequestMethod.POST)
@@ -260,7 +384,7 @@ public class MelangeController {
         melangeEmplacementRepository.save(old_emp);
         machineRepository.save(machine);
         melangeRepository.save(melange);
-        return "redirect:/listMelange?ref_id=" + ref_id + "&ref=" + ref + "";
+        return "redirect:/listMelangeSortie?ref_id=" + ref_id + "&ref=" + ref + "";
     }
 
 
@@ -440,6 +564,38 @@ public class MelangeController {
         }
         melangeRepository.deleteById(id);
         return "redirect:/listMelange?ref_id=" + ref_id + "&ref=" + ref + "&page=" + page + "&size=" + size + "&keyword=" + keyword + "";
+    }
+
+    @Secured(value = {"ROLE_ADMIN"})
+    @RequestMapping(value = "/finMelange", method = RequestMethod.POST)
+    public String finMelange(Model model, Long id,
+                                @RequestParam(name = "ref_id") Long ref_id,
+                                @RequestParam(name = "ref") String ref,
+                                @RequestParam(name = "keyword", defaultValue = "") String keyword,
+                                int page, int size) {
+        Melange melange = melangeRepository.findById(id).get();
+        model.addAttribute("melange", melange);
+        model.addAttribute("ref", ref);
+        model.addAttribute("ref_id", ref_id);
+        List<Fin> fin= finRepository.findAll();
+        model.addAttribute("fins", fin);
+        return "fin";
+        }
+    @Secured(value = {"ROLE_ADMIN"})
+    @RequestMapping(value = "/deleteMelangeSortie", method = RequestMethod.POST)
+    public String deleteMelangeSortie(Model model, String lot, String fin) {
+        Melange melange = melangeRepository.findByLot(lot);
+        Long id=melange.getId();
+        if (melange.getMachine() != null) {
+            melange.getMachine().setEtat(false);
+        }
+        if (melange.getEmplacement() != null) {
+            melange.getEmplacement().setEtat(false);
+        }
+        Fin fin1=finRepository.findByPlace(fin);
+        melange.setFin(fin1);
+        melangeRepository.deleteById(id);
+        return "redirect:/listMelangeSortie?ref_id=" + melange.getReference().getId() + "&ref=" + melange.getReference().getReference() +"";
     }
     /////////////////---------------------- Emplacement Melange-----------------------////////////////
 

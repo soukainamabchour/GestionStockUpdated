@@ -13,7 +13,7 @@
                 <div class="card">
                     <h5 class="card-header">Mélanges</h5>
                     <div class="card-body">
-                        <form method="get" th:action="@{listerMelanges}">
+                        <form method="get" th:action="@{listMelanges}">
                             <div class="form-inline">
                                 <input class="form-control" type="text" name="keyword" id="keyword"
                                        placeholder="Chercher un mélange" th:value="${keyword}">
@@ -51,13 +51,16 @@
                                     <td th:if="${m.getEmplacement()==null}"
                                         th:text="${m.getMachine().getReference()}"></td>
                                     <td th:text="${m.jours}" class="btn btn-success"
-                                    th:if="${m.jours<=90 && m.jours>30}"></td>
+                                        th:if="${m.jours<=90 && m.jours>30}"></td>
                                     <td th:text="${m.jours}" class="btn btn-warning"
                                         th:if="${m.jours<=30 && m.jours>0}"></td>
                                     <td class="btn btn-danger" th:if="${m.jours<=0}">Expiré</td>
                                 </tr>
                             </table>
-
+                            <div>
+                                <a th:href="@{formMelanges}"
+                                   class="btn btn-block btn-outline-success mb-3">Ajouter un mélange</a>
+                            </div>
                         </div>
                         <div class="card-footer">
                             <div class="container justify-content-center mt-3 container-fluid">

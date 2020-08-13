@@ -29,11 +29,6 @@
             </li>
             <li class="nav-item active">
                 <b>
-                    <a class="nav-link text-dark" th:href="@{listMachines}">Machines</a>
-                </b>
-            </li>
-            <li class="nav-item active">
-                <b>
                     <a class="nav-link text-dark" th:href="@{melanges}">Mélanges</a>
                 </b>
             </li>
@@ -50,6 +45,16 @@
         </ul>
 
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <b>
+                    <a class="nav-link text-dark" th:href="@{listMachines}">Machines</a>
+                </b>
+            </li>
+            <li class="nav-item active">
+                <b>
+                    <a class="nav-link text-dark" th:href="@{listFins}">Places Sortie</a>
+                </b>
+            </li>
             <span sec:authorize="isAuthenticated()">
                 <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-dark" href="#" id="navbardrop" data-toggle="dropdown">

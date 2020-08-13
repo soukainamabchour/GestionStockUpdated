@@ -13,7 +13,7 @@
                 <div class="card">
                     <h5 class="card-header">Mélanges</h5>
                     <div class="card-body">
-                        <form method="get" th:action="@{listerMelanges}">
+                        <form method="get" th:action="@{listMelangesSortie}">
                             <div class="form-inline">
                                 <input class="form-control" type="text" name="keyword" id="keyword"
                                        placeholder="Chercher un mélange" th:value="${keyword}">
@@ -55,9 +55,18 @@
                                     <td th:text="${m.jours}" class="btn btn-warning"
                                         th:if="${m.jours<=30 && m.jours>0}"></td>
                                     <td class="btn btn-danger" th:if="${m.jours<=0}">Expiré</td>
+                                    <td>
+                                        <form th:action="@{useMelanges(id=${m.id})}"
+                                              method="post">
+                                            <input type="hidden" name="id" th:value="${m.id}"/>
+                                            <input type="hidden" name="page" th:value="${currentPage}"/>
+                                            <input type="hidden" name="size" th:value="${5}"/>
+                                            <button disabled th:if="${m.emplacement==null}" class="btn btn-outline-secondary">Retirer</button>
+                                            <button th:if="${m.emplacement!=null}" class="btn btn-outline-info">Retirer</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             </table>
-
                         </div>
                         <div class="card-footer">
                             <div class="container justify-content-center mt-3 container-fluid">

@@ -34,29 +34,9 @@
                                     <td th:text="${v.id}"></td>
                                     <td th:text="${v.reference}"></td>
                                     <td>
-                                        <a th:href="@{listMelange2(ref_id=${v.id}, ref=${v.reference})}">Mélanges</a>
+                                        <a th:href="@{listMelangeSortie(ref_id=${v.id}, ref=${v.reference})}">Mélanges</a>
                                     </td>
                                     <td th:text="${v.melanges.size()}"></td>
-                                    <td sec:authorize="hasRole('ROLE_ADMIN')">
-                                        <a th:href="@{editMelangeRef(id=${v.id})}"
-                                           class="btn btn-outline-warning">Modifier</a>
-                                    </td>
-                                    <td sec:authorize="hasRole('ROLE_ADMIN')">
-                                        <form th:action="@{deleteMelangeRef}" method="post">
-                                            <input type="hidden" name="id" th:value="${v.id}"/>
-                                            <input type="hidden" name="page" th:value="${currentPage}"/>
-                                            <input type="hidden" name="size" th:value="${size}"/>
-                                            <button disabled th:if="${v.melanges.size()!=0}" type="submit"
-                                                    class="btn btn-outline-secondary">
-                                                Supprimer
-                                            </button>
-                                            <button th:if="${v.melanges.size()==0}" type="submit"
-                                                    class="btn btn-outline-danger"
-                                                    onclick="return confirm('êtes-vous sûr de vouloir supprimer?');">
-                                                Supprimer
-                                            </button>
-                                        </form>
-                                    </td>
                                 </tr>
                             </table>
                         </div>

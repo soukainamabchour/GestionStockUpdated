@@ -41,4 +41,6 @@ public class Melange implements Serializable {
     private MelangeEmplacement emplacement;
     @OneToOne
     private Machine machine;
+    @OneToOne
+    private Fin fin;
 }

@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       layout:decorator="theme">
 <head>
-    <title>Liste des références des mélanges</title>
+    <title>Liste des Machines</title>
 </head>
 <body>
 <div layout:fragment="content">
@@ -13,44 +13,33 @@
             <div class="col-md-12">
                 <div class="card">
 
-                    <h5 class="card-header">Références Mélange</h5>
+                    <h5 class="card-header">Sortie </h5>
                     <div class="card-body">
-                        <form method="get" th:action="@{melangeRef}">
+                        <form method="get" th:action="@{listFins}">
                             <div class="form-inline">
                                 <input class="form-control" type="text" name="keyword" id="keyword"
-                                       placeholder="Chercher une référence" th:value="${keyword}">
+                                       placeholder="Chercher un utilisateur" th:value="${keyword}">
                                 <button class="btn btn-outline-primary" type="submit">Chercher</button>
                             </div>
                         </form>
                         <div class="container mt-3">
                             <table class="table table-hover" id="table">
                                 <tr>
-                                    <th class="bg-info text-white">ID</th>
-                                    <th class="bg-info text-white">Référence</th>
-                                    <th class="bg-info text-white">Mélanges</th>
-                                    <th class="bg-info text-white">Quantité de mélanges</th>
+                                    <th>Id</th>
+                                    <th>Place</th>
                                 </tr>
-                                <tr th:each="v:${melangeref}">
-                                    <td th:text="${v.id}"></td>
-                                    <td th:text="${v.reference}"></td>
-                                    <td>
-                                        <a th:href="@{listMelange2(ref_id=${v.id}, ref=${v.reference})}">Mélanges</a>
-                                    </td>
-                                    <td th:text="${v.melanges.size()}"></td>
+                                <tr th:each="f:${fins}">
+                                    <td th:text="${f.getId()}"></td>
+                                    <td th:text="${f.getPlace()}"></td>
                                     <td sec:authorize="hasRole('ROLE_ADMIN')">
-                                        <a th:href="@{editMelangeRef(id=${v.id})}"
+                                        <a th:href="@{editFin(id=${f.getId()})}"
                                            class="btn btn-outline-warning">Modifier</a>
                                     </td>
                                     <td sec:authorize="hasRole('ROLE_ADMIN')">
-                                        <form th:action="@{deleteMelangeRef}" method="post">
-                                            <input type="hidden" name="id" th:value="${v.id}"/>
+                                        <form th:action="@{deleteFin(id=${f.getId()})}" method="post">
                                             <input type="hidden" name="page" th:value="${currentPage}"/>
-                                            <input type="hidden" name="size" th:value="${size}"/>
-                                            <button disabled th:if="${v.melanges.size()!=0}" type="submit"
-                                                    class="btn btn-outline-secondary">
-                                                Supprimer
-                                            </button>
-                                            <button th:if="${v.melanges.size()==0}" type="submit"
+                                            <input type="hidden" name="size" th:value="${5}"/>
+                                            <button type="submit"
                                                     class="btn btn-outline-danger"
                                                     onclick="return confirm('êtes-vous sûr de vouloir supprimer?');">
                                                 Supprimer
@@ -59,6 +48,9 @@
                                     </td>
                                 </tr>
                             </table>
+                            <a sec:authorize="hasRole('ROLE_ADMIN')"
+                               th:href="@{formFin}"
+                               class="btn btn-block btn-outline-success mb-3">Ajouter une Sortie</a>
                         </div>
                         <div class="card-footer">
                             <div class="container mt-3">
@@ -66,7 +58,7 @@
                                     <li th:each="page,status:${pages}">
                                         <a
                                                 th:class="${status.index==currentPage?'btn btn-outline-primary':'btn'}"
-                                                th:href="@{melangeRef(page=${status.index}, keyword=${keyword})}"
+                                                th:href="@{listFins(page=${status.index}, keyword=${keyword})}"
                                                 th:text="${status.index+1}"></a>
                                     </li>
                                 </ul>
