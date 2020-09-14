@@ -27,14 +27,12 @@
                                 <tr>
                                     <th class="bg-info text-white">ID</th>
                                     <th class="bg-info text-white">Référence</th>
-                                    <th class="bg-info text-white">Mélanges</th>
                                     <th class="bg-info text-white">Quantité de mélanges</th>
                                 </tr>
                                 <tr th:each="v:${melangeref}">
                                     <td th:text="${v.id}"></td>
-                                    <td th:text="${v.reference}"></td>
                                     <td>
-                                        <a th:href="@{listMelange(ref_id=${v.id}, ref=${v.reference})}">Mélanges</a>
+                                        <a th:href="@{listMelange(ref_id=${v.id}, ref=${v.reference})}" th:text="${v.reference}"></a>
                                     </td>
                                     <td th:text="${v.melanges.size()}"></td>
                                     </td>

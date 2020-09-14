@@ -27,14 +27,12 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Référence</th>
-                                    <th>Inserts</th>
                                     <th>Quantité d'inserts</th>
                                 </tr>
                                 <tr th:each="v:${composantRef}">
                                     <td th:text="${v.id}"></td>
-                                    <td th:text="${v.reference}"></td>
                                     <td>
-                                        <a th:href="@{listComposant(ref_id=${v.id}, ref=${v.reference})}">Inserts</a>
+                                        <a th:href="@{listComposant(ref_id=${v.id}, ref=${v.reference})}" th:text="${v.reference}"></a>
                                     </td>
                                     <td th:text="${v.composants.size()}"></td>
                                     <td sec:authorize="hasRole('ROLE_ADMIN')">
