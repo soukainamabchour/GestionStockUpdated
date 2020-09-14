@@ -25,4 +25,5 @@ public class MelangeReference implements Serializable {
     private String reference;
     @OneToMany(mappedBy = "reference")
     private Collection<Melange> melanges;
+    private double poidsTot;
 }

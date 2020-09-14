@@ -17,7 +17,9 @@ import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -95,6 +97,15 @@ public class MelangeController {
                                  @RequestParam(name = "size", defaultValue = "5") int s,
                                  @RequestParam(name = "keyword", defaultValue = "") String kw) {
         Page<MelangeReference> melangesref = melangeReferenceRepository.findByReferenceContains(kw, PageRequest.of(p, s));
+
+        melangeReferenceRepository.findAll().forEach(melangeReference -> {
+            double sum=0;
+           for(Melange melange:melangeReference.getMelanges()){
+               sum=sum+melange.getPoids();
+           }
+            melangeReference.setPoidsTot(sum);
+        });
+
         model.addAttribute("melangeref", melangesref.getContent());
         model.addAttribute("pages", new int[melangesref.getTotalPages()]);
         model.addAttribute("currentPage", p);
@@ -295,6 +306,7 @@ public class MelangeController {
                               @RequestParam(name = "keyword", defaultValue = "") String kw
     ) {
         Page<Melange> melange = melangeRepository.findByReference_IdAndLotContainsOrderByJoursAsc(ref_id, kw, PageRequest.of(p, s));
+
         model.addAttribute("result", melange.getTotalElements());
         model.addAttribute("listMelange", melange.getContent());
         model.addAttribute("pages", new int[melange.getTotalPages()]);

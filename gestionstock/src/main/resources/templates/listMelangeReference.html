@@ -28,6 +28,7 @@
                                     <th class="bg-info text-white">ID</th>
                                     <th class="bg-info text-white">Référence</th>
                                     <th class="bg-info text-white">Quantité de mélanges</th>
+                                    <th class="bg-info text-white">Poids total</th>
                                 </tr>
                                 <tr th:each="v:${melangeref}">
                                     <td th:text="${v.id}"></td>
@@ -35,7 +36,12 @@
                                         <a th:href="@{listMelange(ref_id=${v.id}, ref=${v.reference})}" th:text="${v.reference}"></a>
                                     </td>
                                     <td th:text="${v.melanges.size()}"></td>
-                                    </td>
+                                    <td th:text="${v.getPoidsTot()}" class="btn btn-danger"
+                                        th:if="${v.getPoidsTot()<1000}"></td>
+                                    <td th:text="${v.getPoidsTot()}" class="btn btn-warning"
+                                        th:if="${v.getPoidsTot()<=1100 && v.getPoidsTot()>=900}"></td>
+                                    <td th:text="${v.getPoidsTot()}" class="btn btn-success"
+                                        th:if="${v.getPoidsTot()>1000}"></td>
                                 </tr>
                             </table>
                             <a th:href="@{formMelangeRef}"
