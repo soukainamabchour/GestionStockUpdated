@@ -63,6 +63,16 @@
                                     </td>
                                 </tr>
                             </table>
+                            <table>
+                                <tr>
+                                    <td th:text="${poidsTot}" class="btn btn-danger"
+                                        th:if="${poidsTot<1000}"></td>
+                                    <td th:text="${poidsTot}" class="btn btn-warning"
+                                        th:if="${poidsTot<=1100 && poidsTot>=900}"></td>
+                                    <td th:text="${poidsTot}" class="btn btn-success"
+                                        th:if="${poidsTot>1000}"></td>
+                                </tr>
+                            </table>
                             <div>
                                 <a th:href="@{formMelange(ref_id=${ref_id}, ref=${ref})}"
                                    class="btn btn-block btn-outline-success mb-3">Ajouter un mélange</a>

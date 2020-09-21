@@ -33,7 +33,7 @@
                                 <tr th:each="v:${melangeref}">
                                     <td th:text="${v.id}"></td>
                                     <td>
-                                        <a th:href="@{listMelange(ref_id=${v.id}, ref=${v.reference})}" th:text="${v.reference}"></a>
+                                        <a th:href="@{listMelange(ref_id=${v.id}, ref=${v.reference}, poidsTot=${v.getPoidsTot()})}" th:text="${v.reference}"></a>
                                     </td>
                                     <td th:text="${v.melanges.size()}"></td>
                                     <td th:text="${v.getPoidsTot()}" class="btn btn-danger"

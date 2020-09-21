@@ -20,6 +20,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -303,10 +304,9 @@ public class MelangeController {
                               @RequestParam(name = "size", defaultValue = "5") int s,
                               @RequestParam(name = "ref_id") Long ref_id,
                               @RequestParam(name = "ref") String ref,
-                              @RequestParam(name = "keyword", defaultValue = "") String kw
-    ) {
+                              @RequestParam(name = "poidsTot")double poidsTot,
+                              @RequestParam(name = "keyword", defaultValue = "") String kw) {
         Page<Melange> melange = melangeRepository.findByReference_IdAndLotContainsOrderByJoursAsc(ref_id, kw, PageRequest.of(p, s));
-
         model.addAttribute("result", melange.getTotalElements());
         model.addAttribute("listMelange", melange.getContent());
         model.addAttribute("pages", new int[melange.getTotalPages()]);
@@ -315,6 +315,7 @@ public class MelangeController {
         model.addAttribute("ref_id", ref_id);
         model.addAttribute("ref", ref);
         model.addAttribute("keyword", kw);
+        model.addAttribute("poidsTot", poidsTot);
         return "listMelange";
     }
 
