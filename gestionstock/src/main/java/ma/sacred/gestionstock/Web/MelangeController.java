@@ -83,6 +83,13 @@ public class MelangeController {
                                  @RequestParam(name = "size", defaultValue = "5") int s,
                                  @RequestParam(name = "keyword", defaultValue = "") String kw) {
         Page<MelangeReference> melangesref = melangeReferenceRepository.findByReferenceContains(kw, PageRequest.of(p, s));
+        melangeReferenceRepository.findAll().forEach(melangeReference -> {
+            double sum=0;
+            for(Melange melange:melangeReference.getMelanges()){
+                sum=sum+melange.getPoids();
+            }
+            melangeReference.setPoidsTot(sum);
+        });
         model.addAttribute("melangeref", melangesref.getContent());
         model.addAttribute("pages", new int[melangesref.getTotalPages()]);
         model.addAttribute("currentPage", p);
@@ -327,6 +334,7 @@ public class MelangeController {
                               @RequestParam(name = "size", defaultValue = "5") int s,
                               @RequestParam(name = "ref_id") Long ref_id,
                               @RequestParam(name = "ref") String ref,
+                               @RequestParam(name = "poidsTot")double poidsTot,
                               @RequestParam(name = "keyword", defaultValue = "") String kw
     ) {
         Page<Melange> melange = melangeRepository.findByReference_IdAndLotContainsOrderByJoursAsc(ref_id, kw, PageRequest.of(p, s));
@@ -338,6 +346,7 @@ public class MelangeController {
         model.addAttribute("ref_id", ref_id);
         model.addAttribute("ref", ref);
         model.addAttribute("keyword", kw);
+        model.addAttribute("poidsTot", poidsTot);
         return "listMelange2";
     }
 

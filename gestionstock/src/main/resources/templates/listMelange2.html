@@ -89,6 +89,16 @@
                                     </td>
                                 </tr>
                             </table>
+                            <table>
+                                <tr>
+                                    <td th:text="${poidsTot}" class="btn btn-danger"
+                                        th:if="${poidsTot<1000}"></td>
+                                    <td th:text="${poidsTot}" class="btn btn-warning"
+                                        th:if="${poidsTot<=1100 && poidsTot>=900}"></td>
+                                    <td th:text="${poidsTot}" class="btn btn-success"
+                                        th:if="${poidsTot>1000}"></td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="card-footer">
                             <div class="container justify-content-center mt-3 container-fluid">
